@@ -26,9 +26,14 @@ document.addEventListener("DOMContentLoaded", function () {
         notesList.innerHTML = "";
         notes.forEach((note, index) => {
             const li = document.createElement("li");
-            li.textContent = note;
+            li.style.display = "flex";
+            li.style.justifyContent = "space-between";
+            li.style.alignItems = "center";
 
-            // Кнопка удалить
+            const noteText = document.createElement("span");
+            noteText.textContent = note;
+            li.appendChild(noteText);
+
             const deleteBtn = document.createElement("button");
             deleteBtn.textContent = "Удалить";
             deleteBtn.className = "delete-btn";
@@ -109,12 +114,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     scheduleInput.value = localStorage.getItem("schedule") || "";
     scheduleDisplay.textContent = scheduleInput.value;
+    // Создаём контейнер для textarea + кнопки
+    const scheduleContainer = document.createElement("div");
+    scheduleContainer.style.display = "flex";
+    scheduleContainer.style.gap = "12px";
+    scheduleContainer.style.marginTop = "16px";
+    scheduleContainer.style.alignItems = "center";
 
-    saveScheduleBtn.addEventListener("click", function () {
-        localStorage.setItem("schedule", scheduleInput.value);
-        scheduleDisplay.textContent = scheduleInput.value;
-    });
-    // Кнопка "Удалить всё" для расписания
+    scheduleContainer.appendChild(scheduleInput);
+    scheduleContainer.appendChild(saveScheduleBtn);
+
     const deleteScheduleBtn = document.createElement("button");
     deleteScheduleBtn.textContent = "Удалить всё";
     deleteScheduleBtn.className = "delete-btn";
@@ -123,6 +132,11 @@ document.addEventListener("DOMContentLoaded", function () {
         scheduleInput.value = "";
         scheduleDisplay.textContent = "";
     });
-    scheduleDisplay.parentNode.appendChild(deleteScheduleBtn);
 
+    scheduleContainer.appendChild(deleteScheduleBtn);
+
+    const scheduleSection = document.getElementById("schedule-section");
+    scheduleSection.insertBefore(scheduleContainer, scheduleDisplay);
+    scheduleSection.removeChild(scheduleInput);
+    scheduleSection.removeChild(saveScheduleBtn);
 });
