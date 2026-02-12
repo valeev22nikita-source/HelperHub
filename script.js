@@ -1,5 +1,14 @@
 document.addEventListener("DOMContentLoaded", function () {
 
+    /* ===== SCROLL ANIMATION ===== */
+    const sections = document.querySelectorAll("section");
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) entry.target.classList.add("visible");
+        });
+    }, { threshold: 0.15 });
+    sections.forEach(section => observer.observe(section));
+
     /* ===== NOTES ===== */
     const noteInput = document.getElementById("note-input");
     const addNoteBtn = document.getElementById("add-note");
@@ -19,16 +28,16 @@ document.addEventListener("DOMContentLoaded", function () {
             const li = document.createElement("li");
             li.textContent = note;
 
-            const deleteBtn = document.createElement("button");
-            deleteBtn.textContent = "Удалить";
-            deleteBtn.className = "delete-btn";
-            deleteBtn.addEventListener("click", () => {
+            const delBtn = document.createElement("button");
+            delBtn.textContent = "Удалить";
+            delBtn.className = "note-delete-btn";
+            delBtn.addEventListener("click", () => {
                 notes.splice(index, 1);
                 saveNotes();
                 renderNotes();
             });
 
-            li.appendChild(deleteBtn);
+            li.appendChild(delBtn);
             notesList.appendChild(li);
         });
     }
@@ -40,18 +49,25 @@ document.addEventListener("DOMContentLoaded", function () {
             noteInput.value = "";
             saveNotes();
             renderNotes();
+            animateProgress();
+            updateStreak();
         }
     });
 
     function updateProgress() {
-        const percent = Math.min(notes.length * 10, 100);
+        const percent = notes.length * 10 > 100 ? 100 : notes.length * 10;
         progressBar.style.width = percent + "%";
+    }
+
+    function animateProgress() {
+        progressBar.classList.add("animate");
+        setTimeout(() => progressBar.classList.remove("animate"), 800);
     }
 
     renderNotes();
     updateProgress();
 
-    /* ===== STREAK ===== */
+    /* ===== STREAK SYSTEM ===== */
     const streakBtn = document.getElementById("streak-btn");
     streakBtn.addEventListener("click", updateStreak);
 
@@ -64,9 +80,12 @@ document.addEventListener("DOMContentLoaded", function () {
         else {
             const yesterday = new Date();
             yesterday.setDate(yesterday.getDate() - 1);
+
             if (today === lastVisit) { }
-            else if (yesterday.toDateString() === lastVisit) streak += 1;
-            else streak = 1;
+            else if (yesterday.toDateString() === lastVisit) {
+                streak += 1;
+                document.getElementById("streak-count").classList.add("streak-glow");
+            } else streak = 1;
         }
 
         localStorage.setItem("lastVisit", today);
