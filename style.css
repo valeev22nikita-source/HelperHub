@@ -11,7 +11,6 @@ body {
         linear-gradient(180deg, #000 0%, #050505 100%);
 }
 
-/* ===== АНИМАЦИЯ ПОЯВЛЕНИЯ ===== */
 @keyframes fadeSlideDown {
     from { opacity: 0; transform: translateY(-50px); }
     to { opacity: 1; transform: translateY(0); }
@@ -113,7 +112,6 @@ input, textarea {
 input:focus, textarea:focus { outline: none; border-color: #ff9900; }
 
 button {
-    margin-top: 16px;
     padding: 14px 22px;
     border: none;
     background: linear-gradient(145deg, #ff9900, #ff7a00);
@@ -135,6 +133,9 @@ button:hover { transform: scale(1.07); box-shadow: 0 10px 25px rgba(255,153,0,0.
     border-radius: 10px;
     border: 1px solid #222;
     transition: all 0.3s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 #notes-list li:hover {
@@ -150,40 +151,9 @@ button:hover { transform: scale(1.07); box-shadow: 0 10px 25px rgba(255,153,0,0.
 #progress-bar.animate { box-shadow: 0 0 15px rgba(255,153,0,0.6); }
 
 #resources-section a { color: #ff9900; text-decoration: none; transition: 0.3s; }
-
 #resources-section a:hover { color: #ffb347; text-decoration: underline; }
+
 #schedule-display { margin-top: 18px; padding: 16px; background-color: #1a1a1a; border-radius: 10px; border: 1px solid #222; }
 
 /* ===== STREAK CARD ===== */
-.streak-card { text-align: center; background: linear-gradient(145deg, #1b1b1b, #0a0a0a); border-radius: 18px; padding: 25px 30px; box-shadow: 0 15px 40px rgba(0,0,0,0.7); border: 1px solid #222; max-width: 320px; margin: 0 auto 30px auto; opacity: 0; transform: translateY(20px); transition: all 0.7s ease; }
-
-.streak-card.visible { opacity: 1; transform: translateY(0); }
-
-.streak-number { font-size: 3em; font-weight: 900; margin: 12px 0; background: linear-gradient(145deg, #ff9900, #ff5e00); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-
-#streak-status { font-size: 0.95em; color: #aaa; margin-bottom: 12px; letter-spacing: 1px; }
-
-.streak-glow { animation: streakGlow 0.8s ease; }
-
-@keyframes streakGlow { 0% { text-shadow:0 0 0px rgba(255,140,0,0); } 50% { text-shadow:0 0 25px rgba(255,140,0,0.9); } 100% { text-shadow:0 0 0px rgba(255,140,0,0); } }
-
-#streak-btn { padding: 12px 24px; border-radius: 12px; border: none; background: linear-gradient(145deg, #ff9900, #ff7a00); font-weight: bold; cursor: pointer; transition: all 0.3s ease; }
-
-#streak-btn:hover { transform: scale(1.08); box-shadow: 0 10px 30px rgba(255,153,0,0.5); }
-/* ===== КРАСНАЯ КНОПКА УДАЛИТЬ ===== */
-.delete-btn {
-    background: #e63946; /* Красный основной цвет */
-    color: white;
-    border-radius: 8px;
-    padding: 6px 12px;
-    font-weight: bold;
-    border: none;
-    cursor: pointer;
-    float: right; /* справа от заметки */
-    transition: all 0.3s ease;
-}
-
-.delete-btn:hover {
-    box-shadow: 0 0 12px #e63946; /* яркое свечение красным */
-    transform: scale(1.05);
-}
+.streak-card { text-align: center; background: linear-gradient(145deg, #1b1b1b, #0a0a0a); border-radius: 18px; padding: 25px 30px; box-shadow: 0 15px 40px rgba(0,0,0,0.7); border: 1px solid
