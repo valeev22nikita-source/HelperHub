@@ -24,20 +24,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function renderNotes() {
         notesList.innerHTML = "";
-        notes.forEach((note, index) => {
+        notes.forEach(note => {
             const li = document.createElement("li");
             li.textContent = note;
-
-            const delBtn = document.createElement("button");
-            delBtn.textContent = "Удалить";
-            delBtn.className = "note-delete-btn";
-            delBtn.addEventListener("click", () => {
-                notes.splice(index, 1);
-                saveNotes();
-                renderNotes();
-            });
-
-            li.appendChild(delBtn);
             notesList.appendChild(li);
         });
     }
@@ -104,7 +93,6 @@ document.addEventListener("DOMContentLoaded", function () {
     /* ===== SCHEDULE ===== */
     const scheduleInput = document.getElementById("schedule-input");
     const saveScheduleBtn = document.getElementById("save-schedule");
-    const deleteScheduleBtn = document.getElementById("delete-schedule");
     const scheduleDisplay = document.getElementById("schedule-display");
 
     scheduleInput.value = localStorage.getItem("schedule") || "";
@@ -113,12 +101,6 @@ document.addEventListener("DOMContentLoaded", function () {
     saveScheduleBtn.addEventListener("click", function () {
         localStorage.setItem("schedule", scheduleInput.value);
         scheduleDisplay.textContent = scheduleInput.value;
-    });
-
-    deleteScheduleBtn.addEventListener("click", function () {
-        localStorage.removeItem("schedule");
-        scheduleInput.value = "";
-        scheduleDisplay.textContent = "";
     });
 
 });
