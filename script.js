@@ -1,14 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-    /* ===== SCROLL ANIMATION ===== */
-    const sections = document.querySelectorAll("section");
-    const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) entry.target.classList.add("visible");
-        });
-    }, { threshold: 0.15 });
-    sections.forEach(section => observer.observe(section));
-
     /* ===== NOTES ===== */
     const noteInput = document.getElementById("note-input");
     const addNoteBtn = document.getElementById("add-note");
@@ -26,13 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
         notesList.innerHTML = "";
         notes.forEach((note, index) => {
             const li = document.createElement("li");
-            li.style.display = "flex";
-            li.style.justifyContent = "space-between";
-            li.style.alignItems = "center";
-
-            const noteText = document.createElement("span");
-            noteText.textContent = note;
-            li.appendChild(noteText);
+            li.textContent = note;
 
             const deleteBtn = document.createElement("button");
             deleteBtn.textContent = "Удалить";
@@ -55,25 +40,18 @@ document.addEventListener("DOMContentLoaded", function () {
             noteInput.value = "";
             saveNotes();
             renderNotes();
-            animateProgress();
-            updateStreak();
         }
     });
 
     function updateProgress() {
-        const percent = notes.length * 10 > 100 ? 100 : notes.length * 10;
+        const percent = Math.min(notes.length * 10, 100);
         progressBar.style.width = percent + "%";
-    }
-
-    function animateProgress() {
-        progressBar.classList.add("animate");
-        setTimeout(() => progressBar.classList.remove("animate"), 800);
     }
 
     renderNotes();
     updateProgress();
 
-    /* ===== STREAK SYSTEM ===== */
+    /* ===== STREAK ===== */
     const streakBtn = document.getElementById("streak-btn");
     streakBtn.addEventListener("click", updateStreak);
 
@@ -86,12 +64,9 @@ document.addEventListener("DOMContentLoaded", function () {
         else {
             const yesterday = new Date();
             yesterday.setDate(yesterday.getDate() - 1);
-
             if (today === lastVisit) { }
-            else if (yesterday.toDateString() === lastVisit) {
-                streak += 1;
-                document.getElementById("streak-count").classList.add("streak-glow");
-            } else streak = 1;
+            else if (yesterday.toDateString() === lastVisit) streak += 1;
+            else streak = 1;
         }
 
         localStorage.setItem("lastVisit", today);
@@ -110,33 +85,21 @@ document.addEventListener("DOMContentLoaded", function () {
     /* ===== SCHEDULE ===== */
     const scheduleInput = document.getElementById("schedule-input");
     const saveScheduleBtn = document.getElementById("save-schedule");
+    const deleteScheduleBtn = document.getElementById("delete-schedule");
     const scheduleDisplay = document.getElementById("schedule-display");
 
     scheduleInput.value = localStorage.getItem("schedule") || "";
     scheduleDisplay.textContent = scheduleInput.value;
-    // Создаём контейнер для textarea + кнопки
-    const scheduleContainer = document.createElement("div");
-    scheduleContainer.style.display = "flex";
-    scheduleContainer.style.gap = "12px";
-    scheduleContainer.style.marginTop = "16px";
-    scheduleContainer.style.alignItems = "center";
 
-    scheduleContainer.appendChild(scheduleInput);
-    scheduleContainer.appendChild(saveScheduleBtn);
+    saveScheduleBtn.addEventListener("click", function () {
+        localStorage.setItem("schedule", scheduleInput.value);
+        scheduleDisplay.textContent = scheduleInput.value;
+    });
 
-    const deleteScheduleBtn = document.createElement("button");
-    deleteScheduleBtn.textContent = "Удалить всё";
-    deleteScheduleBtn.className = "delete-btn";
-    deleteScheduleBtn.addEventListener("click", () => {
+    deleteScheduleBtn.addEventListener("click", function () {
         localStorage.removeItem("schedule");
         scheduleInput.value = "";
         scheduleDisplay.textContent = "";
     });
 
-    scheduleContainer.appendChild(deleteScheduleBtn);
-
-    const scheduleSection = document.getElementById("schedule-section");
-    scheduleSection.insertBefore(scheduleContainer, scheduleDisplay);
-    scheduleSection.removeChild(scheduleInput);
-    scheduleSection.removeChild(saveScheduleBtn);
 });
