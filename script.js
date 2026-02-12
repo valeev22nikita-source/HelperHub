@@ -24,9 +24,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function renderNotes() {
         notesList.innerHTML = "";
-        notes.forEach(note => {
+        notes.forEach((note, index) => {
             const li = document.createElement("li");
             li.textContent = note;
+
+            // Кнопка удалить
+            const deleteBtn = document.createElement("button");
+            deleteBtn.textContent = "Удалить";
+            deleteBtn.className = "delete-btn";
+            deleteBtn.addEventListener("click", () => {
+                notes.splice(index, 1);
+                saveNotes();
+                renderNotes();
+            });
+
+            li.appendChild(deleteBtn);
             notesList.appendChild(li);
         });
     }
@@ -102,5 +114,15 @@ document.addEventListener("DOMContentLoaded", function () {
         localStorage.setItem("schedule", scheduleInput.value);
         scheduleDisplay.textContent = scheduleInput.value;
     });
+    // Кнопка "Удалить всё" для расписания
+    const deleteScheduleBtn = document.createElement("button");
+    deleteScheduleBtn.textContent = "Удалить всё";
+    deleteScheduleBtn.className = "delete-btn";
+    deleteScheduleBtn.addEventListener("click", () => {
+        localStorage.removeItem("schedule");
+        scheduleInput.value = "";
+        scheduleDisplay.textContent = "";
+    });
+    scheduleDisplay.parentNode.appendChild(deleteScheduleBtn);
 
 });
