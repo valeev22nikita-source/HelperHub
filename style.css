@@ -4,37 +4,19 @@ body {
     padding: 0;
     font-family: 'Montserrat', 'Arial', sans-serif;
     color: #fff;
-    overflow-x: hidden;
     background:
         radial-gradient(circle at 50% -20%, rgba(255,255,255,0.04), transparent 60%),
         radial-gradient(circle at bottom, #111 0%, #000 70%),
         linear-gradient(180deg, #000 0%, #050505 100%);
 }
 
-/* ===== АНИМАЦИИ ===== */
-@keyframes fadeSlideDown {
-    from { opacity: 0; transform: translateY(-50px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes floating {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(8px); }
-    100% { transform: translateY(0px); }
-}
-
-/* ===== ШАПКА ===== */
+/* ===== HEADER ===== */
 header {
     background: linear-gradient(160deg, #0a0a0a 0%, #000 100%);
-    padding: 130px 20px 110px 20px;
+    padding: 120px 20px 100px;
     text-align: center;
-    position: relative;
-    z-index: 100;
     box-shadow: 0 50px 120px rgba(0,0,0,0.95);
-    animation: fadeSlideDown 1.3s ease forwards, floating 7s ease-in-out infinite 1.3s;
 }
-
-.logo-wrapper { display: inline-block; text-align: center; }
 
 header h1 {
     font-size: 3.4em;
@@ -45,15 +27,14 @@ header h1 {
     align-items: center;
 }
 
-header h1 .helper {
+header .helper {
     background: linear-gradient(145deg, #ff9900, #ff7a00);
     color: #000;
     padding: 8px 20px;
     border-radius: 14px;
-    box-shadow: 0 10px 25px rgba(255,153,0,0.45);
 }
 
-header h1 .hub { color: #fff; margin-left: 6px; }
+header .hub { margin-left: 6px; }
 
 .tagline {
     margin-top: 14px;
@@ -62,85 +43,121 @@ header h1 .hub { color: #fff; margin-left: 6px; }
     letter-spacing: 1.5px;
 }
 
-/* ===== GRID LAYOUT ===== */
+/* ===== GRID ===== */
 main {
-    padding: 100px 40px;
-    max-width: 1200px;
+    max-width: 1100px;
     margin: auto;
-
+    padding: 80px 30px;
     display: grid;
     grid-template-columns: 2fr 1fr;
-    gap: 40px;
+    gap: 35px;
 }
 
-/* Большие блоки */
-#notes-section,
-#schedule-section {
-    grid-column: span 2;
-}
-
-/* ===== УНИВЕРСАЛЬНЫЕ КАРТОЧКИ ===== */
+/* ===== ОБЩИЕ КАРТОЧКИ ===== */
 section {
     background: linear-gradient(160deg, #151515, #0b0b0b);
-    padding: 28px;
+    padding: 25px;
     border-radius: 18px;
     border: 1px solid rgba(255,153,0,0.15);
     box-shadow:
-        0 25px 60px rgba(0,0,0,0.8),
-        inset 0 0 30px rgba(255,255,255,0.02);
-    transition: all 0.4s ease;
-    position: relative;
-    overflow: hidden;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-
-    opacity: 0;
-    transform: translateY(40px);
-}
-
-section.visible {
-    opacity: 1;
-    transform: translateY(0);
-    transition: all 0.8s ease;
-}
-
-section::before {
-    content: "";
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255,153,0,0.08), transparent 60%);
-    opacity: 0;
-    transition: opacity 0.6s ease;
-}
-
-section:hover::before {
-    opacity: 1;
+        0 20px 50px rgba(0,0,0,0.8),
+        inset 0 0 25px rgba(255,255,255,0.02);
+    transition: 0.3s ease;
 }
 
 section:hover {
-    transform: translateY(-6px);
     border-color: rgba(255,153,0,0.4);
+    transform: translateY(-4px);
 }
 
 section h2 {
     margin-top: 0;
     color: #ff9900;
-    font-size: 1.2em;
-    letter-spacing: 1px;
-    text-shadow: 0 0 10px rgba(255,153,0,0.4);
+    font-size: 1.1em;
 }
 
-/* ===== КОМПАКТНЫЕ БЛОКИ ===== */
-#progress-section,
-#calendar-section,
-#resources-section,
+/* ===== STREAK (центр, квадрат) ===== */
 #streak-section {
-    min-height: 170px;
+    grid-column: span 2;
+    max-width: 320px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.streak-number {
+    font-size: 2.5em;
+    font-weight: 900;
+    margin: 10px 0;
+    background: linear-gradient(145deg, #ff9900, #ff5e00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* ===== NOTES (большой блок) ===== */
+#notes-section {
+    grid-column: span 2;
+}
+
+#note-input {
+    margin-top: 15px;
+}
+
+#add-note {
+    margin-top: 18px;
+}
+
+/* ===== PROGRESS (широкий, но низкий) ===== */
+#progress-section {
+    grid-column: span 2;
+    padding: 18px 25px;
+}
+
+#progress-bar-container {
+    background-color: #222;
+    border-radius: 12px;
+    height: 18px;
+    width: 100%;
+    margin-top: 12px;
+    overflow: hidden;
+}
+
+#progress-bar {
+    background: linear-gradient(145deg, #ff9900, #ff7a00);
+    height: 100%;
+    width: 0%;
+    transition: width 0.6s ease;
+}
+
+/* ===== КОМПАКТНЫЕ КАРТОЧКИ ===== */
+#calendar-section,
+#resources-section {
+    min-height: 160px;
+}
+
+#calendar-section input {
+    margin-top: 15px;
+}
+
+/* ===== SCHEDULE (большой блок) ===== */
+#schedule-section {
+    grid-column: span 2;
+}
+
+#schedule-input {
+    margin-top: 15px;
+    resize: none;
+}
+
+#save-schedule {
+    margin-top: 18px;
+}
+
+#schedule-display {
+    margin-top: 15px;
+    padding: 12px;
+    background-color: #1a1a1a;
+    border-radius: 10px;
+    border: 1px solid #222;
 }
 
 /* ===== INPUTS ===== */
@@ -149,7 +166,6 @@ input, textarea {
     padding: 12px;
     border-radius: 10px;
     border: 1px solid #222;
-    margin-top: 12px;
     background-color: #141414;
     color: white;
     font-size: 0.9em;
@@ -159,32 +175,25 @@ input, textarea {
 input:focus, textarea:focus {
     outline: none;
     border-color: #ff9900;
-    box-shadow: 0 0 10px rgba(255,153,0,0.3);
 }
 
-/* Убираем возможность растягивать */
-textarea {
-    resize: none;
-}
-
-/* ===== КНОПКИ ===== */
+/* ===== BUTTONS ===== */
 button {
-    margin-top: auto;
     padding: 12px 22px;
     border-radius: 12px;
     border: none;
     background: linear-gradient(145deg, #ff9900, #ff5e00);
     font-weight: 700;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: 0.3s ease;
 }
 
 button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 30px rgba(255,153,0,0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(255,153,0,0.4);
 }
 
-/* ===== NOTES ===== */
+/* ===== NOTES LIST ===== */
 #notes-list {
     margin-top: 15px;
     list-style: none;
@@ -197,63 +206,15 @@ button:hover {
     background-color: #1c1c1c;
     border-radius: 10px;
     border: 1px solid #222;
-    transition: all 0.3s ease;
-}
-
-#notes-list li:hover {
-    transform: translateY(-3px);
-    border-color: #ff9900;
-}
-
-/* ===== PROGRESS ===== */
-#progress-bar-container {
-    background-color: #222;
-    border-radius: 12px;
-    height: 20px;
-    width: 100%;
-    margin-top: 15px;
-    overflow: hidden;
-}
-
-#progress-bar {
-    background: linear-gradient(145deg, #ff9900, #ff7a00);
-    height: 100%;
-    width: 0%;
-    transition: width 0.8s ease;
 }
 
 /* ===== RESOURCES ===== */
 #resources-section ul {
     padding-left: 18px;
 }
-
 #resources-section a {
     color: #ff9900;
     text-decoration: none;
-    transition: 0.3s;
-}
-
-#resources-section a:hover {
-    color: #ffb347;
-}
-
-/* ===== SCHEDULE ===== */
-#schedule-display {
-    margin-top: 15px;
-    padding: 14px;
-    background-color: #1a1a1a;
-    border-radius: 10px;
-    border: 1px solid #222;
-}
-
-/* ===== STREAK ===== */
-.streak-number {
-    font-size: 2.5em;
-    font-weight: 900;
-    margin: 10px 0;
-    background: linear-gradient(145deg, #ff9900, #ff5e00);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
 }
 
 /* ===== АДАПТИВ ===== */
@@ -263,7 +224,9 @@ button:hover {
         padding: 60px 20px;
     }
 
+    #streak-section,
     #notes-section,
+    #progress-section,
     #schedule-section {
         grid-column: span 1;
     }
