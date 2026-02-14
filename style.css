@@ -231,3 +231,114 @@ button:hover {
         grid-column: span 1;
     }
 }
+/* ============================= */
+/* Общая система карточек       */
+/* ============================= */
+
+.card {
+    width: 100%;
+    max-width: 700px;
+    margin: 20px auto;
+    padding: 20px 24px; /* внутренние отступы */
+    box-sizing: border-box;
+    border-radius: 16px;
+}
+
+/* ВАЖНО: чтобы элементы не выходили за рамки */
+.card * {
+    box-sizing: border-box;
+}
+
+/* ============================= */
+/* Поля ввода и textarea         */
+/* ============================= */
+
+.card input,
+.card textarea {
+    width: 100%;
+    padding: 10px 12px;
+    margin-top: 10px;
+    border-radius: 8px;
+}
+
+/* Отступ между полем и кнопкой */
+.card button {
+    margin-top: 15px;
+}
+
+/* ============================= */
+/* Заметки                      */
+/* ============================= */
+
+/* Блок сохранённых заметок */
+.notes-list {
+    width: 100%;
+    margin-top: 15px;
+}
+
+/* ============================= */
+/* Прогресс заметок (оставляем компактным) */
+/* ============================= */
+
+.progress-card {
+    padding: 15px 24px;
+}
+
+.progress-bar {
+    margin-top: 8px;
+}
+
+/* ============================= */
+/* Полезные ресурсы              */
+/* ============================= */
+
+.resources-card {
+    padding: 16px 20px;
+}
+
+.resources-card ul {
+    margin-top: 8px;
+    margin-bottom: 0;
+    padding-left: 18px;
+}
+
+/* Убираем лишнюю высоту */
+.resources-card li {
+    margin-bottom: 6px;
+}
+
+/* ============================= */
+/* Календарь                    */
+/* ============================= */
+
+.calendar-card input {
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* ============================= */
+/* Расписание на неделю         */
+/* ============================= */
+
+.schedule-card textarea {
+    width: 100%;
+}
+
+.schedule-output {
+    width: 100%;
+    margin-top: 15px;
+}
+
+/* ============================= */
+/* Учебный стрик — квадрат по центру */
+/* ============================= */
+
+.streak-card {
+    width: 220px;
+    height: 220px;
+    margin: 0 auto 30px auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
