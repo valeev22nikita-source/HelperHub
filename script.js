@@ -24,9 +24,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function renderNotes() {
         notesList.innerHTML = "";
-        notes.forEach(note => {
+        notes.forEach((note, index) => {
             const li = document.createElement("li");
             li.textContent = note;
+            li.classList.add("note-item");
+
+            // Добавляем возможность удалить заметку
+            const deleteBtn = document.createElement("button");
+            deleteBtn.textContent = "✕";
+            deleteBtn.className = "delete-note";
+            deleteBtn.addEventListener("click", () => {
+                notes.splice(index, 1);
+                saveNotes();
+                renderNotes();
+            });
+
+            li.appendChild(deleteBtn);
             notesList.appendChild(li);
         });
     }
@@ -44,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     function updateProgress() {
-        const percent = notes.length * 10 > 100 ? 100 : notes.length * 10;
+        const percent = Math.min(notes.length * 10, 100);
         progressBar.style.width = percent + "%";
     }
 
@@ -58,6 +71,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /* ===== STREAK SYSTEM ===== */
     const streakBtn = document.getElementById("streak-btn");
+
     streakBtn.addEventListener("click", updateStreak);
 
     function updateStreak() {
@@ -74,6 +88,7 @@ document.addEventListener("DOMContentLoaded", function () {
             else if (yesterday.toDateString() === lastVisit) {
                 streak += 1;
                 document.getElementById("streak-count").classList.add("streak-glow");
+                setTimeout(() => document.getElementById("streak-count").classList.remove("streak-glow"), 1000);
             } else streak = 1;
         }
 
@@ -101,6 +116,8 @@ document.addEventListener("DOMContentLoaded", function () {
     saveScheduleBtn.addEventListener("click", function () {
         localStorage.setItem("schedule", scheduleInput.value);
         scheduleDisplay.textContent = scheduleInput.value;
+        scheduleDisplay.classList.add("saved");
+        setTimeout(() => scheduleDisplay.classList.remove("saved"), 1000);
     });
 
 });
