@@ -72,7 +72,7 @@ main {
     gap: 50px;
 }
 
-/* ===== СЕКЦИИ ===== */
+/* ===== УНИВЕРСАЛЬНЫЕ СЕКЦИИ ===== */
 section {
     background: linear-gradient(160deg, #151515, #0b0b0b);
     padding: 30px;
@@ -175,6 +175,7 @@ button:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(255,153
     justify-content: space-between;
     align-items: center;
 }
+
 #notes-list li:hover {
     transform: translateY(-4px);
     box-shadow: 0 10px 20px rgba(255,153,0,0.3);
@@ -217,12 +218,11 @@ button:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(255,153
     flex-wrap: wrap;
 }
 
-/* ===== РЕСУРСЫ И КАЛЕНДАРЬ ===== */
-#resources-section,
-#calendar-section {
+/* ===== РЕСУРСЫ ===== */
+#resources-section {
     flex: 1 1 48%;
     min-width: 250px;
-    padding: 20px;
+    padding: 15px;
     border-radius: 18px;
     border: 1px solid rgba(255,153,0,0.15);
     box-shadow:
@@ -233,33 +233,58 @@ button:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(255,153
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    min-height: 180px;
-    transition: all 0.3s ease;
+    min-height: auto;
+}
+
+#resources-section ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+#resources-section li {
+    margin-bottom: 6px;
 }
 
 #resources-section a {
     color: #ff9900;
     text-decoration: none;
-    margin-bottom: 8px;
-    transition: 0.3s;
+    font-size: 0.95em;
 }
 
 #resources-section a:hover { color: #ffb347; text-decoration: underline; }
 
+/* ===== CALENDAR ===== */
+#calendar-section {
+    flex: 1 1 48%;
+    min-width: 250px;
+    padding: 15px;
+    border-radius: 18px;
+    border: 1px solid rgba(255,153,0,0.15);
+    box-shadow:
+        0 20px 50px rgba(0,0,0,0.7),
+        inset 0 0 20px rgba(255,255,255,0.02);
+    background: linear-gradient(160deg, #151515, #0b0b0b);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    min-height: auto;
+}
+
+#calendar-section h2 {
+    margin-bottom: 6px;
+}
+
 #calendar-input {
     width: 150px;
-    padding: 8px 12px;
+    padding: 6px 10px;
     font-size: 0.95em;
-    border-radius: 8px;
+    border-radius: 6px;
     border: 1px solid #222;
     background-color: #141414;
     color: #fff;
-}
-
-#calendar-input:focus {
-    outline: none;
-    border-color: #ff9900;
-    box-shadow: 0 0 10px rgba(255,153,0,0.3);
+    margin: 0;
 }
 
 /* ===== STREAK CARD ===== */
