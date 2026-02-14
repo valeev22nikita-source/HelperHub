@@ -2,12 +2,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /* ===== SCROLL ANIMATION ===== */
     const sections = document.querySelectorAll("section");
-    const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) entry.target.classList.add("visible");
-        });
-    }, { threshold: 0.15 });
-    sections.forEach(section => observer.observe(section));
+
+    if ("IntersectionObserver" in window) {
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("visible");
+                }
+            });
+        }, { threshold: 0.15 });
+
+        sections.forEach(section => observer.observe(section));
+    }
+
 
     /* ===== NOTES ===== */
     const noteInput = document.getElementById("note-input");
@@ -23,94 +30,132 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function renderNotes() {
+        if (!notesList) return;
+
         notesList.innerHTML = "";
+
         notes.forEach((note, index) => {
             const li = document.createElement("li");
-            li.textContent = note;
             li.classList.add("note-item");
+
+            const text = document.createElement("span");
+            text.textContent = note;
 
             const deleteBtn = document.createElement("button");
             deleteBtn.textContent = "✕";
             deleteBtn.className = "delete-note";
-            deleteBtn.addEventListener("click", () => {
+
+            deleteBtn.addEventListener("click", function () {
                 notes.splice(index, 1);
                 saveNotes();
                 renderNotes();
             });
 
+            li.appendChild(text);
             li.appendChild(deleteBtn);
             notesList.appendChild(li);
         });
     }
 
-    addNoteBtn.addEventListener("click", function () {
-        const value = noteInput.value.trim();
-        if (value !== "") {
+    if (addNoteBtn && noteInput) {
+        addNoteBtn.addEventListener("click", function () {
+            const value = noteInput.value.trim();
+            if (!value) return;
+
             notes.push(value);
             noteInput.value = "";
             saveNotes();
             renderNotes();
             animateProgress();
-            updateStreak();
-        }
-    });
+        });
+    }
 
     function updateProgress() {
+        if (!progressBar) return;
         const percent = Math.min(notes.length * 10, 100);
         progressBar.style.width = percent + "%";
     }
 
     function animateProgress() {
+        if (!progressBar) return;
         progressBar.classList.add("animate");
-        setTimeout(() => progressBar.classList.remove("animate"), 800);
+        setTimeout(() => {
+            progressBar.classList.remove("animate");
+        }, 800);
     }
 
     renderNotes();
     updateProgress();
 
+
     /* ===== STREAK SYSTEM ===== */
     const streakBtn = document.getElementById("streak-btn");
+    const streakCount = document.getElementById("streak-count");
+    const streakStatus = document.getElementById("streak-status");
 
-    streakBtn.addEventListener("click", updateStreak);
+    function loadStreak() {
+        if (!streakCount) return;
+        const streak = parseInt(localStorage.getItem("streak")) || 0;
+        streakCount.textContent = streak;
+        updateStatus(streak);
+    }
 
-    function updateStreak() {
+    function updateStatus(streak) {
+        if (!streakStatus) return;
+
+        if (streak < 3) streakStatus.textContent = "Начало пути";
+        else if (streak < 7) streakStatus.textContent = "На огне 🔥";
+        else if (streak < 14) streakStatus.textContent = "Непобедим";
+        else streakStatus.textContent = "Элитная дисциплина";
+    }
+
+    function confirmStudyToday() {
         const today = new Date().toDateString();
         const lastVisit = localStorage.getItem("lastVisit");
         let streak = parseInt(localStorage.getItem("streak")) || 0;
 
-        if (!lastVisit) streak = 1;
-        else {
-            const yesterday = new Date();
-            yesterday.setDate(yesterday.getDate() - 1);
+        if (lastVisit === today) return; // защита от повторного нажатия
 
-            if (today === lastVisit) { }
-            else if (yesterday.toDateString() === lastVisit) {
-                streak += 1;
-                document.getElementById("streak-count").classList.add("streak-glow");
-                setTimeout(() => document.getElementById("streak-count").classList.remove("streak-glow"), 1000);
-            } else streak = 1;
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+
+        if (lastVisit === yesterday.toDateString()) {
+            streak += 1;
+        } else {
+            streak = 1;
         }
 
         localStorage.setItem("lastVisit", today);
         localStorage.setItem("streak", streak);
-        document.getElementById("streak-count").textContent = streak;
 
-        const status = document.getElementById("streak-status");
-        if (streak < 3) status.textContent = "Начало пути";
-        else if (streak < 7) status.textContent = "На огне 🔥";
-        else if (streak < 14) status.textContent = "Непобедим";
-        else status.textContent = "Элитная дисциплина";
+        if (streakCount) {
+            streakCount.textContent = streak;
+            streakCount.classList.add("streak-glow");
+            setTimeout(() => {
+                streakCount.classList.remove("streak-glow");
+            }, 800);
+        }
+
+        updateStatus(streak);
     }
 
-    updateStreak();
+    if (streakBtn) {
+        streakBtn.addEventListener("click", confirmStudyToday);
+    }
+
+    loadStreak();
+
 
     /* ===== CALENDAR ===== */
     const calendarInput = document.getElementById("calendar-input");
-    const savedDate = localStorage.getItem("selectedDate");
-    if (savedDate) calendarInput.value = savedDate;
 
-    calendarInput.addEventListener("change", () => {
-        localStorage.setItem("selectedDate", calendarInput.value);
-    });
+    if (calendarInput) {
+        const savedDate = localStorage.getItem("selectedDate");
+        if (savedDate) calendarInput.value = savedDate;
+
+        calendarInput.addEventListener("change", function () {
+            localStorage.setItem("selectedDate", calendarInput.value);
+        });
+    }
 
 });
