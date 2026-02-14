@@ -72,10 +72,10 @@ main {
     gap: 50px;
 }
 
-/* ===== УНИВЕРСАЛЬНЫЕ ПЛАШКИ ===== */
+/* ===== УНИВЕРСАЛЬНЫЕ СЕКЦИИ ===== */
 section {
     background: linear-gradient(160deg, #151515, #0b0b0b);
-    padding: 34px;
+    padding: 30px;
     border-radius: 18px;
     border: 1px solid rgba(255,153,0,0.15);
     box-shadow:
@@ -87,9 +87,8 @@ section {
 
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    min-height: 260px;
-
+    justify-content: flex-start;
+    min-height: auto;
     opacity: 0;
     transform: translateY(40px);
 }
@@ -159,7 +158,12 @@ button {
 button:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(255,153,0,0.5); }
 
 /* ===== NOTES ===== */
-#notes-list { margin-top: 20px; list-style: none; padding: 0; }
+#notes-list {
+    margin-top: 20px;
+    list-style: none;
+    padding: 0;
+}
+
 #notes-list li {
     padding: 14px;
     margin-bottom: 12px;
@@ -171,42 +175,88 @@ button:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(255,153
     justify-content: space-between;
     align-items: center;
 }
-#notes-list li:hover { transform: translateY(-4px); box-shadow: 0 10px 20px rgba(255,153,0,0.3); border-color: #ff9900; }
-.delete-note { background: transparent; color: #ff5e00; font-weight: 900; cursor: pointer; border: none; font-size: 1.1em; }
+
+#notes-list li:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(255,153,0,0.3);
+    border-color: #ff9900;
+}
+
+.delete-note {
+    background: transparent;
+    color: #ff5e00;
+    font-weight: 900;
+    cursor: pointer;
+    border: none;
+    font-size: 1.1em;
+}
 
 /* ===== PROGRESS ===== */
 #progress-bar-container {
     background-color: #222;
     border-radius: 12px;
-    height: 22px;
+    height: 16px;   /* уменьшенная высота */
     width: 100%;
-    margin-top: 20px;
+    margin-top: 12px;
     overflow: hidden;
 }
+
 #progress-bar {
     background: linear-gradient(145deg, #ff9900, #ff7a00);
     height: 100%;
     width: 0%;
     transition: width 0.8s ease;
 }
+
 #progress-bar.animate { transform: scaleX(1.05); }
 
 /* ===== RESOURCES ===== */
-#resources-section a { color: #ff9900; text-decoration: none; transition: 0.3s; }
-#resources-section a:hover { color: #ffb347; text-decoration: underline; }
-
-/* ===== SCHEDULE ===== */
-#schedule-display {
-    margin-top: 18px;
-    padding: 16px;
-    background-color: #1a1a1a;
-    border-radius: 10px;
-    border: 1px solid #222;
-    transition: all 0.3s ease;
+#resources-section {
+    padding: 20px;
+    min-height: auto;
 }
-#schedule-display.saved { background-color: #ff9900; color: #000; }
+
+#resources-section a {
+    color: #ff9900;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+#resources-section a:hover {
+    color: #ffb347;
+    text-decoration: underline;
+}
+
+/* ===== CALENDAR ===== */
+#calendar-section {
+    padding: 20px;
+    min-height: auto;
+}
+
+#calendar-input.short-input {
+    width: 200px;
+    padding: 8px 12px;
+    font-size: 0.95em;
+    border-radius: 8px;
+}
 
 /* ===== STREAK CARD ===== */
-.streak-card { text-align: center; max-width: 320px; margin: 0 auto; }
-.streak-number { font-size: 3em; font-weight: 900; margin: 12px 0; background: linear-gradient(145deg, #ff9900, #ff5e00); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.streak-glow { text-shadow: 0 0 20px #ff9900, 0 0 30px #ff5e00; transition: all 0.5s ease; }
+.streak-card {
+    text-align: center;
+    max-width: 320px;
+    margin: 0 auto;
+}
+
+.streak-number {
+    font-size: 3em;
+    font-weight: 900;
+    margin: 12px 0;
+    background: linear-gradient(145deg, #ff9900, #ff5e00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.streak-glow {
+    text-shadow: 0 0 20px #ff9900, 0 0 30px #ff5e00;
+    transition: all 0.5s ease;
+}
