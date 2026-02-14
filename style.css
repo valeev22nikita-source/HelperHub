@@ -192,12 +192,18 @@ button:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(255,153
 }
 
 /* ===== PROGRESS ===== */
+#progress-section {
+    padding: 16px 20px;
+    min-height: auto;
+    gap: 8px;
+}
+
 #progress-bar-container {
     background-color: #222;
     border-radius: 12px;
-    height: 16px;   /* уменьшенная высота */
+    height: 14px;
     width: 100%;
-    margin-top: 12px;
+    margin-top: 8px;
     overflow: hidden;
 }
 
@@ -212,8 +218,17 @@ button:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(255,153
 
 /* ===== RESOURCES ===== */
 #resources-section {
-    padding: 20px;
+    padding: 16px 20px;
     min-height: auto;
+}
+
+#resources-section ul {
+    padding-left: 0;
+    margin-top: 8px;
+}
+
+#resources-section li {
+    margin-bottom: 6px;
 }
 
 #resources-section a {
@@ -229,15 +244,19 @@ button:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(255,153
 
 /* ===== CALENDAR ===== */
 #calendar-section {
-    padding: 20px;
+    padding: 16px 20px;
     min-height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
 }
 
-#calendar-input.short-input {
-    width: 200px;
-    padding: 8px 12px;
-    font-size: 0.95em;
-    border-radius: 8px;
+#calendar-input {
+    width: 160px;
+    padding: 6px 10px;
+    font-size: 0.9em;
+    border-radius: 6px;
 }
 
 /* ===== STREAK CARD ===== */
