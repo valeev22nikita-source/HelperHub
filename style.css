@@ -4,19 +4,37 @@ body {
     padding: 0;
     font-family: 'Montserrat', 'Arial', sans-serif;
     color: #fff;
+    overflow-x: hidden;
     background:
         radial-gradient(circle at 50% -20%, rgba(255,255,255,0.04), transparent 60%),
         radial-gradient(circle at bottom, #111 0%, #000 70%),
         linear-gradient(180deg, #000 0%, #050505 100%);
 }
 
-/* ===== HEADER ===== */
+/* ===== АНИМАЦИИ ===== */
+@keyframes fadeSlideDown {
+    from { opacity: 0; transform: translateY(-50px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes floating {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(8px); }
+    100% { transform: translateY(0px); }
+}
+
+/* ===== ШАПКА ===== */
 header {
     background: linear-gradient(160deg, #0a0a0a 0%, #000 100%);
-    padding: 120px 20px 100px;
+    padding: 130px 20px 110px 20px;
     text-align: center;
-    box-shadow: 0 50px 120px rgba(0,0,0,0.95);
+    position: relative;
+    z-index: 100;
+    box-shadow: 0 50px 120px rgba(0,0,0,0.95), 0 0 120px rgba(255,255,255,0.04);
+    animation: fadeSlideDown 1.3s ease forwards, floating 7s ease-in-out infinite 1.3s;
 }
+
+.logo-wrapper { display: inline-block; text-align: center; }
 
 header h1 {
     font-size: 3.4em;
@@ -27,14 +45,15 @@ header h1 {
     align-items: center;
 }
 
-header .helper {
+header h1 .helper {
     background: linear-gradient(145deg, #ff9900, #ff7a00);
     color: #000;
     padding: 8px 20px;
     border-radius: 14px;
+    box-shadow: 0 10px 25px rgba(255, 153, 0, 0.45);
 }
 
-header .hub { margin-left: 6px; }
+header h1 .hub { color: #fff; margin-left: 6px; }
 
 .tagline {
     margin-top: 14px;
@@ -43,81 +62,137 @@ header .hub { margin-left: 6px; }
     letter-spacing: 1.5px;
 }
 
-/* ===== GRID ===== */
+/* ===== MAIN ===== */
 main {
-    max-width: 1100px;
+    padding: 100px 20px;
+    max-width: 1000px;
     margin: auto;
-    padding: 80px 30px;
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 35px;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
 }
 
-/* ===== ОБЩИЕ КАРТОЧКИ ===== */
+/* ===== УНИВЕРСАЛЬНЫЕ ПЛАШКИ ===== */
 section {
     background: linear-gradient(160deg, #151515, #0b0b0b);
-    padding: 25px;
+    padding: 34px;
     border-radius: 18px;
     border: 1px solid rgba(255,153,0,0.15);
     box-shadow:
-        0 20px 50px rgba(0,0,0,0.8),
-        inset 0 0 25px rgba(255,255,255,0.02);
-    transition: 0.3s ease;
+        0 25px 60px rgba(0,0,0,0.8),
+        inset 0 0 30px rgba(255,255,255,0.02);
+    transition: all 0.5s ease;
+    position: relative;
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 260px;
+
+    opacity: 0;
+    transform: translateY(40px);
+}
+
+section.visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.8s ease;
+}
+
+section::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,153,0,0.08), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.6s ease;
+}
+
+section:hover::before {
+    opacity: 1;
 }
 
 section:hover {
+    transform: translateY(-8px);
     border-color: rgba(255,153,0,0.4);
-    transform: translateY(-4px);
 }
 
 section h2 {
     margin-top: 0;
     color: #ff9900;
-    font-size: 1.1em;
+    letter-spacing: 1px;
+    text-shadow: 0 0 10px rgba(255,153,0,0.4);
 }
 
-/* ===== STREAK (центр, квадрат) ===== */
-#streak-section {
-    grid-column: span 2;
-    max-width: 320px;
-    margin: 0 auto;
-    text-align: center;
+/* ===== INPUTS ===== */
+input, textarea {
+    width: 100%;
+    padding: 14px;
+    border-radius: 10px;
+    border: 1px solid #222;
+    margin-top: 14px;
+    background-color: #141414;
+    color: white;
+    font-size: 0.95em;
+    transition: 0.3s;
 }
 
-.streak-number {
-    font-size: 2.5em;
-    font-weight: 900;
-    margin: 10px 0;
+input:focus, textarea:focus {
+    outline: none;
+    border-color: #ff9900;
+    box-shadow: 0 0 10px rgba(255,153,0,0.3);
+}
+
+/* ===== КНОПКИ (ВЫРОВНЕННЫЕ) ===== */
+button {
+    margin-top: auto;
+    padding: 14px 24px;
+    border-radius: 12px;
+    border: none;
     background: linear-gradient(145deg, #ff9900, #ff5e00);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
-/* ===== NOTES (большой блок) ===== */
-#notes-section {
-    grid-column: span 2;
+button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(255,153,0,0.5);
 }
 
-#note-input {
-    margin-top: 15px;
+/* ===== NOTES ===== */
+#notes-list {
+    margin-top: 20px;
+    list-style: none;
+    padding: 0;
 }
 
-#add-note {
-    margin-top: 18px;
+#notes-list li {
+    padding: 14px;
+    margin-bottom: 12px;
+    background-color: #1c1c1c;
+    border-radius: 10px;
+    border: 1px solid #222;
+    transition: all 0.3s ease;
 }
 
-/* ===== PROGRESS (широкий, но низкий) ===== */
-#progress-section {
-    grid-column: span 2;
-    padding: 18px 25px;
-}
+#notes-list li:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(255,153,0,0.3);
+    border-color: #ff9900;
+    }
 
+/* ===== PROGRESS ===== */
 #progress-bar-container {
     background-color: #222;
     border-radius: 12px;
-    height: 18px;
+    height: 22px;
     width: 100%;
-    margin-top: 12px;
+    margin-top: 20px;
     overflow: hidden;
 }
 
@@ -125,220 +200,42 @@ section h2 {
     background: linear-gradient(145deg, #ff9900, #ff7a00);
     height: 100%;
     width: 0%;
-    transition: width 0.6s ease;
+    transition: width 0.8s ease;
 }
 
-/* ===== КОМПАКТНЫЕ КАРТОЧКИ ===== */
-#calendar-section,
-#resources-section {
-    min-height: 160px;
+/* ===== RESOURCES ===== */
+#resources-section a {
+    color: #ff9900;
+    text-decoration: none;
+    transition: 0.3s;
 }
 
-#calendar-section input {
-    margin-top: 15px;
+#resources-section a:hover {
+    color: #ffb347;
+    text-decoration: underline;
 }
 
-/* ===== SCHEDULE (большой блок) ===== */
-#schedule-section {
-    grid-column: span 2;
-}
-
-#schedule-input {
-    margin-top: 15px;
-    resize: none;
-}
-
-#save-schedule {
-    margin-top: 18px;
-}
-
+/* ===== SCHEDULE ===== */
 #schedule-display {
-    margin-top: 15px;
-    padding: 12px;
+    margin-top: 18px;
+    padding: 16px;
     background-color: #1a1a1a;
     border-radius: 10px;
     border: 1px solid #222;
 }
 
-/* ===== INPUTS ===== */
-input, textarea {
-    width: 100%;
-    padding: 12px;
-    border-radius: 10px;
-    border: 1px solid #222;
-    background-color: #141414;
-    color: white;
-    font-size: 0.9em;
-    transition: 0.3s;
-}
-
-input:focus, textarea:focus {
-    outline: none;
-    border-color: #ff9900;
-}
-
-/* ===== BUTTONS ===== */
-button {
-    padding: 12px 22px;
-    border-radius: 12px;
-    border: none;
-    background: linear-gradient(145deg, #ff9900, #ff5e00);
-    font-weight: 700;
-    cursor: pointer;
-    transition: 0.3s ease;
-}
-
-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(255,153,0,0.4);
-}
-
-/* ===== NOTES LIST ===== */
-#notes-list {
-    margin-top: 15px;
-    list-style: none;
-    padding: 0;
-}
-
-#notes-list li {
-    padding: 12px;
-    margin-bottom: 10px;
-    background-color: #1c1c1c;
-    border-radius: 10px;
-    border: 1px solid #222;
-}
-
-/* ===== RESOURCES ===== */
-#resources-section ul {
-    padding-left: 18px;
-}
-#resources-section a {
-    color: #ff9900;
-    text-decoration: none;
-}
-
-/* ===== АДАПТИВ ===== */
-@media (max-width: 900px) {
-    main {
-        grid-template-columns: 1fr;
-        padding: 60px 20px;
-    }
-
-    #streak-section,
-    #notes-section,
-    #progress-section,
-    #schedule-section {
-        grid-column: span 1;
-    }
-}
-/* ============================= */
-/* Общая система карточек       */
-/* ============================= */
-
-.card {
-    width: 100%;
-    max-width: 700px;
-    margin: 20px auto;
-    padding: 20px 24px; /* внутренние отступы */
-    box-sizing: border-box;
-    border-radius: 16px;
-}
-
-/* ВАЖНО: чтобы элементы не выходили за рамки */
-.card * {
-    box-sizing: border-box;
-}
-
-/* ============================= */
-/* Поля ввода и textarea         */
-/* ============================= */
-
-.card input,
-.card textarea {
-    width: 100%;
-    padding: 10px 12px;
-    margin-top: 10px;
-    border-radius: 8px;
-}
-
-/* Отступ между полем и кнопкой */
-.card button {
-    margin-top: 15px;
-}
-
-/* ============================= */
-/* Заметки                      */
-/* ============================= */
-
-/* Блок сохранённых заметок */
-.notes-list {
-    width: 100%;
-    margin-top: 15px;
-}
-
-/* ============================= */
-/* Прогресс заметок (оставляем компактным) */
-/* ============================= */
-
-.progress-card {
-    padding: 15px 24px;
-}
-
-.progress-bar {
-    margin-top: 8px;
-}
-
-/* ============================= */
-/* Полезные ресурсы              */
-/* ============================= */
-
-.resources-card {
-    padding: 16px 20px;
-}
-
-.resources-card ul {
-    margin-top: 8px;
-    margin-bottom: 0;
-    padding-left: 18px;
-}
-
-/* Убираем лишнюю высоту */
-.resources-card li {
-    margin-bottom: 6px;
-}
-
-/* ============================= */
-/* Календарь                    */
-/* ============================= */
-
-.calendar-card input {
-    width: 100%;
-    margin-top: 10px;
-}
-
-/* ============================= */
-/* Расписание на неделю         */
-/* ============================= */
-
-.schedule-card textarea {
-    width: 100%;
-}
-
-.schedule-output {
-    width: 100%;
-    margin-top: 15px;
-}
-
-/* ============================= */
-/* Учебный стрик — квадрат по центру */
-/* ============================= */
-
+/* ===== STREAK CARD ===== */
 .streak-card {
-    width: 220px;
-    height: 220px;
-    margin: 0 auto 30px auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    text-align: center;
+    max-width: 320px;
+    margin: 0 auto;
+}
+
+.streak-number {
+    font-size: 3em;
+    font-weight: 900;
+    margin: 12px 0;
+    background: linear-gradient(145deg, #ff9900, #ff5e00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
