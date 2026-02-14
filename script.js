@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
             li.textContent = note;
             li.classList.add("note-item");
 
-            // Добавляем возможность удалить заметку
+            // Кнопка удалить
             const deleteBtn = document.createElement("button");
             deleteBtn.textContent = "✕";
             deleteBtn.className = "delete-note";
