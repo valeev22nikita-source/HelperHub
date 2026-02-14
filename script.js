@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const notesList = document.getElementById("notes-list");
     const progressBar = document.getElementById("progress-bar");
 
-    let notes = JSON.parse(localStorage.getItem("notes")) || [];
+    let notes = JSON.parse(localStorage.getItem("notes"))  [];
 
     function saveNotes() {
         localStorage.setItem("notes", JSON.stringify(notes));
@@ -27,7 +27,6 @@ document.addEventListener("DOMContentLoaded", function () {
         notes.forEach((note, index) => {
             const li = document.createElement("li");
             li.textContent = note;
-            li.classList.add("note-item");
 
             const deleteBtn = document.createElement("button");
             deleteBtn.textContent = "✕";
@@ -76,7 +75,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function updateStreak() {
         const today = new Date().toDateString();
         const lastVisit = localStorage.getItem("lastVisit");
-        let streak = parseInt(localStorage.getItem("streak")) || 0;
+        let streak = parseInt(localStorage.getItem("streak"))  0;
 
         if (!lastVisit) streak = 1;
         else {
@@ -103,14 +102,5 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     updateStreak();
-
-    /* ===== CALENDAR ===== */
-    const calendarInput = document.getElementById("calendar-input");
-    const savedDate = localStorage.getItem("selectedDate");
-    if (savedDate) calendarInput.value = savedDate;
-
-    calendarInput.addEventListener("change", () => {
-        localStorage.setItem("selectedDate", calendarInput.value);
-    });
 
 });
