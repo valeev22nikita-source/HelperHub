@@ -195,7 +195,7 @@ button:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(255,153
 #progress-bar-container {
     background-color: #222;
     border-radius: 12px;
-    height: 16px;
+    height: 16px; 
     width: 100%;
     margin-top: 12px;
     overflow: hidden;
@@ -210,19 +210,19 @@ button:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(255,153
 
 #progress-bar.animate { transform: scaleX(1.05); }
 
-/* ===== КОНТЕЙНЕР ДЛЯ РЕСУРСОВ И КАЛЕНДАРЯ ===== */
+/* ===== КОНТЕЙНЕР ДЛЯ ДВУХ ПЛАШЕК ===== */
 .lower-section-container {
     display: flex;
     gap: 20px;
-    justify-content: space-between;
+    justify-content: flex-start;
     flex-wrap: wrap;
 }
 
-/* ===== РЕСУРСЫ ===== */
+/* ===== RESOURCES ===== */
 #resources-section {
-    flex: 1 1 48%;
-    min-width: 250px;
-    padding: 15px;
+    flex: 0 0 48%;
+    max-width: 320px;
+    padding: 12px;
     border-radius: 18px;
     border: 1px solid rgba(255,153,0,0.15);
     box-shadow:
@@ -233,32 +233,24 @@ button:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(255,153
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    min-height: auto;
-}
-
-#resources-section ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
-
-#resources-section li {
-    margin-bottom: 6px;
 }
 
 #resources-section a {
     color: #ff9900;
     text-decoration: none;
-    font-size: 0.95em;
+    transition: 0.3s;
 }
 
-#resources-section a:hover { color: #ffb347; text-decoration: underline; }
+#resources-section a:hover {
+    color: #ffb347;
+    text-decoration: underline;
+}
 
 /* ===== CALENDAR ===== */
 #calendar-section {
-    flex: 1 1 48%;
-    min-width: 250px;
-    padding: 15px;
+    flex: 0 0 48%;
+    max-width: 320px;
+    padding: 12px;
     border-radius: 18px;
     border: 1px solid rgba(255,153,0,0.15);
     box-shadow:
@@ -269,15 +261,12 @@ button:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(255,153
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    min-height: auto;
 }
 
-#calendar-section h2 {
-    margin-bottom: 6px;
-}
+#calendar-section h2 { margin-bottom: 6px; }
 
 #calendar-input {
-    width: 150px;
+    width: 120px;
     padding: 6px 10px;
     font-size: 0.95em;
     border-radius: 6px;
