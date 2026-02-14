@@ -27,9 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
         notes.forEach((note, index) => {
             const li = document.createElement("li");
             li.textContent = note;
-            li.classList.add("note-item");
 
-            // Кнопка удалить
             const deleteBtn = document.createElement("button");
             deleteBtn.textContent = "✕";
             deleteBtn.className = "delete-note";
