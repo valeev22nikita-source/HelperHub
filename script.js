@@ -27,6 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
         notes.forEach((note, index) => {
             const li = document.createElement("li");
             li.textContent = note;
+            li.classList.add("note-item");
 
             const deleteBtn = document.createElement("button");
             deleteBtn.textContent = "✕";
@@ -102,5 +103,14 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     updateStreak();
+
+    /* ===== CALENDAR ===== */
+    const calendarInput = document.getElementById("calendar-input");
+    const savedDate = localStorage.getItem("selectedDate");
+    if (savedDate) calendarInput.value = savedDate;
+
+    calendarInput.addEventListener("change", () => {
+        localStorage.setItem("selectedDate", calendarInput.value);
+    });
 
 });
