@@ -105,19 +105,4 @@ document.addEventListener("DOMContentLoaded", function () {
 
     updateStreak();
 
-    /* ===== SCHEDULE ===== */
-    const scheduleInput = document.getElementById("schedule-input");
-    const saveScheduleBtn = document.getElementById("save-schedule");
-    const scheduleDisplay = document.getElementById("schedule-display");
-
-    scheduleInput.value = localStorage.getItem("schedule") || "";
-    scheduleDisplay.textContent = scheduleInput.value;
-
-    saveScheduleBtn.addEventListener("click", function () {
-        localStorage.setItem("schedule", scheduleInput.value);
-        scheduleDisplay.textContent = scheduleInput.value;
-        scheduleDisplay.classList.add("saved");
-        setTimeout(() => scheduleDisplay.classList.remove("saved"), 1000);
-    });
-
 });
