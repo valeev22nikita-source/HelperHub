@@ -56,6 +56,39 @@
             </div>
         </section>
 
+        <!-- ✅ TO-DO BLOCK (ВИЗУАЛЬНЫЙ) -->
+        <section id="todo-section">
+            <h2>📋 Задачи на сегодня</h2>
+
+            <div class="todo-input-wrapper">
+                <input type="text" placeholder="Добавить задачу..." disabled>
+                <button disabled>Добавить</button>
+            </div>
+
+            <ul class="todo-list">
+                <li>
+                    <label>
+                        <input type="checkbox">
+                        Подготовиться к лекции
+                    </label>
+                </li>
+
+                <li>
+                    <label>
+                        <input type="checkbox">
+                        Повторить конспект
+                    </label>
+                </li>
+
+                <li>
+                    <label>
+                        <input type="checkbox">
+                        Сделать домашнее задание
+                    </label>
+                </li>
+            </ul>
+        </section>
+
         <!-- ЗАМЕТКИ -->
         <section id="notes-section">
             <h2>Заметки</h2>
@@ -74,9 +107,8 @@
             </div>
         </section>
 
-        <!-- НИЖНИЙ КОНТЕЙНЕР: РЕСУРСЫ + ИКОНКА + КАЛЕНДАРЬ -->
+        <!-- НИЖНИЙ КОНТЕЙНЕР -->
         <div class="lower-section-container">
-            <!-- Полезные ресурсы -->
             <section id="resources-section">
                 <h2>Полезные ресурсы</h2>
                 <ul>
@@ -86,10 +118,8 @@
                 </ul>
             </section>
 
-            <!-- Иконка между плашками -->
             <div class="middle-icon">🔥</div>
 
-            <!-- Календарь -->
             <section id="calendar-section">
                 <h2>Календарь</h2>
                 <input type="date" id="calendar-input">
