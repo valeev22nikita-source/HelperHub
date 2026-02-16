@@ -20,13 +20,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const noteInput = document.getElementById("note-input");
     const addNoteBtn = document.getElementById("add-note");
     const notesList = document.getElementById("notes-list");
-    const progressBar = document.getElementById("progress-bar");
+    const notesProgressBar = document.getElementById("progress-bar");
 
     let notes = JSON.parse(localStorage.getItem("notes")) || [];
 
     function saveNotes() {
         localStorage.setItem("notes", JSON.stringify(notes));
-        updateProgress();
+        updateNotesProgress();
     }
 
     function renderNotes() {
@@ -66,26 +66,26 @@ document.addEventListener("DOMContentLoaded", function () {
             noteInput.value = "";
             saveNotes();
             renderNotes();
-            animateProgress();
+            animateNotesProgress();
         });
     }
 
-    function updateProgress() {
-        if (!progressBar) return;
+    function updateNotesProgress() {
+        if (!notesProgressBar) return;
         const percent = Math.min(notes.length * 10, 100);
-        progressBar.style.width = percent + "%";
+        notesProgressBar.style.width = percent + "%";
     }
 
-    function animateProgress() {
-        if (!progressBar) return;
-        progressBar.classList.add("animate");
+    function animateNotesProgress() {
+        if (!notesProgressBar) return;
+        notesProgressBar.classList.add("animate");
         setTimeout(() => {
-            progressBar.classList.remove("animate");
+            notesProgressBar.classList.remove("animate");
         }, 800);
     }
 
     renderNotes();
-    updateProgress();
+    updateNotesProgress();
 
 
     /* ===== STREAK SYSTEM ===== */
@@ -114,7 +114,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const lastVisit = localStorage.getItem("lastVisit");
         let streak = parseInt(localStorage.getItem("streak")) || 0;
 
-        if (lastVisit === today) return; // защита от повторного нажатия
+        if (lastVisit === today) return;
 
         const yesterday = new Date();
         yesterday.setDate(yesterday.getDate() - 1);
@@ -156,6 +156,63 @@ document.addEventListener("DOMContentLoaded", function () {
         calendarInput.addEventListener("change", function () {
             localStorage.setItem("selectedDate", calendarInput.value);
         });
+    }
+
+
+    /* ===== TODO PROGRESS SYSTEM ===== */
+    const todoSection = document.getElementById("todo-section");
+
+    if (todoSection) {
+        const checkboxes = todoSection.querySelectorAll("input[type='checkbox']");
+        const todoProgressBar = document.getElementById("todo-progress-bar");
+        const todoProgressText = document.getElementById("todo-progress-text");
+        const completeMessage = document.getElementById("todo-complete-message");
+
+        function updateTodoProgress() {
+            const total = checkboxes.length;
+            const checked = todoSection.querySelectorAll("input[type='checkbox']:checked").length;
+
+            const percent = total > 0 ? (checked / total) * 100 : 0;
+
+            if (todoProgressBar) {
+                todoProgressBar.style.width = percent + "%";
+                todoProgressBar.classList.toggle("full", checked === total && total > 0);
+            }
+
+            if (todoProgressText) {
+                todoProgressText.textContent = Выполнено: ${checked} из ${total};
+            }
+
+            if (completeMessage) {
+                completeMessage.classList.toggle("show", checked === total && total > 0);
+            }
+
+            if (checked === total && total > 0) {
+                launchConfetti();
+            }
+        }
+
+        function launchConfetti() {
+            for (let i = 0; i < 15; i++) {
+                const confetti = document.createElement("div");
+                confetti.classList.add("confetti");
+                confetti.style.left = Math.random() * 100 + "%";
+                confetti.style.top = "0px";
+                todoSection.appendChild(confetti);
+
+                setTimeout(() => confetti.remove(), 800);
+            }
+        }
+
+        checkboxes.forEach(cb => {
+            cb.addEventListener("change", function () {
+                const li = this.closest("li");
+                if (li) li.classList.toggle("completed", this.checked);
+                updateTodoProgress();
+            });
+        });
+
+        updateTodoProgress();
     }
 
 });
