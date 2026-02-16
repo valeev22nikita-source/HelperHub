@@ -416,6 +416,7 @@ button:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(255,153
     inset: 0;
     background: radial-gradient(circle, rgba(255,153,0,0.15), transparent 70%);
     animation: todoGlow 0.6s ease;
+    pointer-events: none; /*вот это важно*/
 }
 
 @keyframes todoGlow {
