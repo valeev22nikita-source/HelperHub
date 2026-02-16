@@ -129,5 +129,21 @@
     </main>
 
     <script src="script.js"></script>
+    <script>
+document.addEventListener("DOMContentLoaded", function () {
+    const checkboxes = document.querySelectorAll("#todo-section input[type='checkbox']");
+
+    checkboxes.forEach(cb => {
+        cb.addEventListener("change", function () {
+            const li = this.closest("li");
+            if (this.checked) {
+                li.classList.add("completed");
+            } else {
+                li.classList.remove("completed");
+            }
+        });
+    });
+});
+</script>
 </body>
 </html>
