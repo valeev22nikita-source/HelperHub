@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function updateTodoProgress() {
         const completed = todos.filter(t => t.completed).length;
         const total = todos.length || 1;
-        todoProgressText.textContent = `Выполнено: ${completed} из ${todos.length}`;
+        todoProgressText.textContent = Выполнено: ${completed} из ${todos.length};
         const percent = (completed / total) * 100;
         todoProgressBar.style.width = percent + "%";
 
@@ -152,19 +152,4 @@ document.addEventListener("DOMContentLoaded", function () {
 
         streakCount.textContent = streak;
         streakCount.classList.add("streak-glow");
-        setTimeout(() => streakCount.classList.remove("streak-glow"), 800);
-
-        updateStatus(streak);
-    });
-
-    loadStreak();
-
-    /* ===== CALENDAR ===== */
-    const calendarInput = document.getElementById("calendar-input");
-    const savedDate = localStorage.getItem("selectedDate");
-    if (savedDate) calendarInput.value = savedDate;
-    calendarInput.addEventListener("change", () => {
-        localStorage.setItem("selectedDate", calendarInput.value);
-    });
-
-});
+        setTimeout(() => streakCount.classList.remove("st
