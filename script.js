@@ -1,9 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-    /* ===== TO-DO LIST ===== */
-    const todoInputWrapper = document.querySelector("#todo-section .todo-input-wrapper");
-    const todoInput = todoInputWrapper ? todoInputWrapper.querySelector("input") : null;
-    const todoButton = todoInputWrapper ? todoInputWrapper.querySelector("button") : null;
+    /* ===== TO-DO ===== */
+    const todoInput = document.getElementById("todo-input");
+    const todoAddBtn = document.getElementById("todo-add-btn");
     const todoList = document.querySelector("#todo-section .todo-list");
     const todoProgressText = document.getElementById("todo-progress-text");
     const todoProgressBar = document.getElementById("todo-progress-bar");
@@ -17,7 +16,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function renderTodos() {
-        if (!todoList) return;
         todoList.innerHTML = "";
         todos.forEach((todo, index) => {
             const li = document.createElement("li");
@@ -28,9 +26,9 @@ document.addEventListener("DOMContentLoaded", function () {
             checkbox.type = "checkbox";
             checkbox.checked = todo.completed;
 
-            checkbox.addEventListener("change", function () {
-                todos[index].completed = this.checked;
-                li.classList.toggle("completed", this.checked);
+            checkbox.addEventListener("change", () => {
+                todos[index].completed = checkbox.checked;
+                li.classList.toggle("completed", checkbox.checked);
                 saveTodos();
             });
 
@@ -42,7 +40,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function updateTodoProgress() {
-        if (!todoProgressText || !todoProgressBar) return;
         const completed = todos.filter(t => t.completed).length;
         const total = todos.length || 1;
         todoProgressText.textContent = Выполнено: ${completed} из ${todos.length};
@@ -55,19 +52,14 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    if (todoButton && todoInput) {
-        todoButton.disabled = false;
-        todoInput.disabled = false;
-
-        todoButton.addEventListener("click", function () {
-            const text = todoInput.value.trim();
-            if (!text) return;
-            todos.push({ text: text, completed: false });
-            todoInput.value = "";
-            saveTodos();
-            renderTodos();
-        });
-    }
+    todoAddBtn.addEventListener("click", () => {
+        const text = todoInput.value.trim();
+        if (!text) return;
+        todos.push({ text, completed: false });
+        todoInput.value = "";
+        saveTodos();
+        renderTodos();
+    });
 
     renderTodos();
     updateTodoProgress();
@@ -86,7 +78,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function renderNotes() {
-        if (!notesList) return;
         notesList.innerHTML = "";
         notes.forEach((note, index) => {
             const li = document.createElement("li");
@@ -108,19 +99,16 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    if (addNoteBtn && noteInput) {
-        addNoteBtn.addEventListener("click", () => {
-            const value = noteInput.value.trim();
-            if (!value) return;
-            notes.push(value);
-            noteInput.value = "";
-            saveNotes();
-            renderNotes();
-        });
-    }
+    addNoteBtn.addEventListener("click", () => {
+        const value = noteInput.value.trim();
+        if (!value) return;
+        notes.push(value);
+        noteInput.value = "";
+        saveNotes();
+        renderNotes();
+    });
 
     function updateNotesProgress() {
-        if (!progressBar) return;
         const percent = Math.min(notes.length * 10, 100);
         progressBar.style.width = percent + "%";
     }
@@ -140,49 +128,43 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function updateStatus(streak) {
-        if (!streakStatus) return;
         if (streak < 3) streakStatus.textContent = "Начало пути";
         else if (streak < 7) streakStatus.textContent = "На огне 🔥";
         else if (streak < 14) streakStatus.textContent = "Непобедим";
         else streakStatus.textContent = "Элитная дисциплина";
     }
 
-    if (streakBtn) {
-        streakBtn.addEventListener("click", () => {
-            const today = new Date().toDateString();
-            const lastVisit = localStorage.getItem("lastVisit");
-            let streak = parseInt(localStorage.getItem("streak")) || 0;
+    streakBtn.addEventListener("click", () => {
+        const today = new Date().toDateString();
+        const lastVisit = localStorage.getItem("lastVisit");
+        let streak = parseInt(localStorage.getItem("streak")) || 0;
 
-            if (lastVisit === today) return;
+        if (lastVisit === today) return;
 
-            const yesterday = new Date();
-            yesterday.setDate(yesterday.getDate() - 1);
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
 
-            if (lastVisit === yesterday.toDateString()) streak += 1;
-            else streak = 1;
+        if (lastVisit === yesterday.toDateString()) streak += 1;
+        else streak = 1;
 
-            localStorage.setItem("lastVisit", today);
-            localStorage.setItem("streak", streak);
+        localStorage.setItem("lastVisit", today);
+        localStorage.setItem("streak", streak);
 
-            streakCount.textContent = streak;
-            streakCount.classList.add("streak-glow");
-            setTimeout(() => streakCount.classList.remove("streak-glow"), 800);
+        streakCount.textContent = streak;
+        streakCount.classList.add("streak-glow");
+        setTimeout(() => streakCount.classList.remove("streak-glow"), 800);
 
-            updateStatus(streak);
-        });
-    }
+        updateStatus(streak);
+    });
 
     loadStreak();
 
     /* ===== CALENDAR ===== */
     const calendarInput = document.getElementById("calendar-input");
-    if (calendarInput) {
-        const savedDate = localStorage.getItem("selectedDate");
-        if (savedDate) calendarInput.value = savedDate;
-
-        calendarInput.addEventListener("change", function () {
-            localStorage.setItem("selectedDate", calendarInput.value);
-        });
-    }
+    const savedDate = localStorage.getItem("selectedDate");
+    if (savedDate) calendarInput.value = savedDate;
+    calendarInput.addEventListener("change", () => {
+        localStorage.setItem("selectedDate", calendarInput.value);
+    });
 
 });
