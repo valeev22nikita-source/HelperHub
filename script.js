@@ -13,6 +13,9 @@ document.addEventListener("DOMContentLoaded", function () {
         }, { threshold: 0.15 });
 
         sections.forEach(section => observer.observe(section));
+    } else {
+        // Если браузер древний — просто показываем секции
+        sections.forEach(section => section.classList.add("visible"));
     }
 
 
@@ -20,13 +23,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const noteInput = document.getElementById("note-input");
     const addNoteBtn = document.getElementById("add-note");
     const notesList = document.getElementById("notes-list");
-    const notesProgressBar = document.getElementById("progress-bar");
+    const progressBar = document.getElementById("progress-bar");
 
     let notes = JSON.parse(localStorage.getItem("notes")) || [];
 
     function saveNotes() {
         localStorage.setItem("notes", JSON.stringify(notes));
-        updateNotesProgress();
+        updateProgress();
     }
 
     function renderNotes() {
@@ -66,26 +69,26 @@ document.addEventListener("DOMContentLoaded", function () {
             noteInput.value = "";
             saveNotes();
             renderNotes();
-            animateNotesProgress();
+            animateProgress();
         });
     }
 
-    function updateNotesProgress() {
-        if (!notesProgressBar) return;
+    function updateProgress() {
+        if (!progressBar) return;
         const percent = Math.min(notes.length * 10, 100);
-        notesProgressBar.style.width = percent + "%";
+        progressBar.style.width = percent + "%";
     }
 
-    function animateNotesProgress() {
-        if (!notesProgressBar) return;
-        notesProgressBar.classList.add("animate");
+    function animateProgress() {
+        if (!progressBar) return;
+        progressBar.classList.add("animate");
         setTimeout(() => {
-            notesProgressBar.classList.remove("animate");
+            progressBar.classList.remove("animate");
         }, 800);
     }
 
     renderNotes();
-    updateNotesProgress();
+    updateProgress();
 
 
     /* ===== STREAK SYSTEM ===== */
@@ -95,6 +98,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function loadStreak() {
         if (!streakCount) return;
+
         const streak = parseInt(localStorage.getItem("streak")) || 0;
         streakCount.textContent = streak;
         updateStatus(streak);
@@ -130,7 +134,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (streakCount) {
             streakCount.textContent = streak;
-          streakCount.classList.add("streak-glow");
+            streakCount.classList.add("streak-glow");
             setTimeout(() => {
                 streakCount.classList.remove("streak-glow");
             }, 800);
@@ -156,63 +160,6 @@ document.addEventListener("DOMContentLoaded", function () {
         calendarInput.addEventListener("change", function () {
             localStorage.setItem("selectedDate", calendarInput.value);
         });
-    }
-
-
-    /* ===== TODO PROGRESS SYSTEM ===== */
-    const todoSection = document.getElementById("todo-section");
-
-    if (todoSection) {
-        const checkboxes = todoSection.querySelectorAll("input[type='checkbox']");
-        const todoProgressBar = document.getElementById("todo-progress-bar");
-        const todoProgressText = document.getElementById("todo-progress-text");
-        const completeMessage = document.getElementById("todo-complete-message");
-
-        function updateTodoProgress() {
-            const total = checkboxes.length;
-            const checked = todoSection.querySelectorAll("input[type='checkbox']:checked").length;
-
-            const percent = total > 0 ? (checked / total) * 100 : 0;
-
-            if (todoProgressBar) {
-                todoProgressBar.style.width = percent + "%";
-                todoProgressBar.classList.toggle("full", checked === total && total > 0);
-            }
-
-            if (todoProgressText) {
-                todoProgressText.textContent = Выполнено: ${checked} из ${total};
-            }
-
-            if (completeMessage) {
-                completeMessage.classList.toggle("show", checked === total && total > 0);
-            }
-
-            if (checked === total && total > 0) {
-                launchConfetti();
-            }
-        }
-
-        function launchConfetti() {
-            for (let i = 0; i < 15; i++) {
-                const confetti = document.createElement("div");
-                confetti.classList.add("confetti");
-                confetti.style.left = Math.random() * 100 + "%";
-                confetti.style.top = "0px";
-                todoSection.appendChild(confetti);
-
-                setTimeout(() => confetti.remove(), 800);
-            }
-        }
-
-        checkboxes.forEach(cb => {
-            cb.addEventListener("change", function () {
-                const li = this.closest("li");
-                if (li) li.classList.toggle("completed", this.checked);
-                updateTodoProgress();
-            });
-        });
-
-        updateTodoProgress();
     }
 
 });
