@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function updateTodoProgress() {
         const completed = todos.filter(t => t.completed).length;
         const total = todos.length || 1;
-        todoProgressText.textContent = Выполнено: ${completed} из ${todos.length};
+        todoProgressText.textContent = `Выполнено: ${completed} из ${todos.length}`;
         const percent = (completed / total) * 100;
         todoProgressBar.style.width = percent + "%";
 
