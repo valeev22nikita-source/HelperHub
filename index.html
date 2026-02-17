@@ -44,42 +44,37 @@
         <!-- 🏆 LEVEL SYSTEM -->
         <section id="level-section" class="level-card">
             <h2>🏆 Уровень дисциплины</h2>
-
             <div class="level-content">
                 <p class="level-title">Воин дисциплины</p>
-
                 <div class="level-progress-container">
                     <div class="level-progress-bar"></div>
                 </div>
-
                 <p class="level-next">До следующего уровня: 4 дня</p>
             </div>
         </section>
 
-        <!-- ✅ TO-DO BLOCK (ВИЗУАЛЬНЫЙ) -->
+        <!-- ✅ TO-DO BLOCK -->
         <section id="todo-section">
             <h2>📋 Задачи на сегодня</h2>
 
             <div class="todo-input-wrapper">
-                <input type="text" placeholder="Добавить задачу..." disabled>
-                <button disabled>Добавить</button>
+                <input type="text" id="todo-input" placeholder="Добавить задачу...">
+                <button id="add-todo">Добавить</button>
             </div>
 
-            <ul class="todo-list">
+            <ul id="todo-list" class="todo-list">
                 <li>
                     <label>
                         <input type="checkbox">
                         Подготовиться к лекции
                     </label>
                 </li>
-
                 <li>
                     <label>
                         <input type="checkbox">
                         Повторить конспект
                     </label>
                 </li>
-
                 <li>
                     <label>
                         <input type="checkbox">
@@ -87,6 +82,7 @@
                     </label>
                 </li>
             </ul>
+
             <div class="todo-progress-wrapper">
                 <div class="todo-progress-info">
                     <span id="todo-progress-text">Выполнено: 0 из 3</span>
@@ -142,21 +138,5 @@
     </main>
 
     <script src="script.js"></script>
-    <script>
-document.addEventListener("DOMContentLoaded", function () {
-    const checkboxes = document.querySelectorAll("#todo-section input[type='checkbox']");
-
-    checkboxes.forEach(cb => {
-        cb.addEventListener("change", function () {
-            const li = this.closest("li");
-            if (this.checked) {
-                li.classList.add("completed");
-            } else {
-                li.classList.remove("completed");
-            }
-        });
-    });
-});
-</script>
 </body>
 </html>
