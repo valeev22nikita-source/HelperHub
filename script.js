@@ -1,17 +1,76 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-    /* ===== SCROLL ANIMATION ===== */
-    const sections = document.querySelectorAll("section");
-    if ("IntersectionObserver" in window) {
-        const observer = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add("visible");
-            });
-        }, { threshold: 0.15 });
-        sections.forEach(section => observer.observe(section));
-    } else {
-        sections.forEach(section => section.classList.add("visible"));
+    /* ===== TO-DO LIST ===== */
+    const todoInputWrapper = document.querySelector("#todo-section .todo-input-wrapper");
+    const todoInput = todoInputWrapper ? todoInputWrapper.querySelector("input") : null;
+    const todoButton = todoInputWrapper ? todoInputWrapper.querySelector("button") : null;
+    const todoList = document.querySelector("#todo-section .todo-list");
+    const todoProgressText = document.getElementById("todo-progress-text");
+    const todoProgressBar = document.getElementById("todo-progress-bar");
+    const todoCompleteMessage = document.getElementById("todo-complete-message");
+
+    let todos = JSON.parse(localStorage.getItem("todos")) || [];
+
+    function saveTodos() {
+        localStorage.setItem("todos", JSON.stringify(todos));
+        updateTodoProgress();
     }
+
+    function renderTodos() {
+        if (!todoList) return;
+        todoList.innerHTML = "";
+        todos.forEach((todo, index) => {
+            const li = document.createElement("li");
+            li.classList.toggle("completed", todo.completed);
+
+            const label = document.createElement("label");
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.checked = todo.completed;
+
+            checkbox.addEventListener("change", function () {
+                todos[index].completed = this.checked;
+                li.classList.toggle("completed", this.checked);
+                saveTodos();
+            });
+
+            label.appendChild(checkbox);
+            label.appendChild(document.createTextNode(todo.text));
+            li.appendChild(label);
+            todoList.appendChild(li);
+        });
+    }
+
+    function updateTodoProgress() {
+        if (!todoProgressText || !todoProgressBar) return;
+        const completed = todos.filter(t => t.completed).length;
+        const total = todos.length || 1;
+        todoProgressText.textContent = Выполнено: ${completed} из ${todos.length};
+        const percent = (completed / total) * 100;
+        todoProgressBar.style.width = percent + "%";
+
+        if (completed === todos.length && todos.length > 0) {
+            todoCompleteMessage.classList.add("show");
+            setTimeout(() => todoCompleteMessage.classList.remove("show"), 1500);
+        }
+    }
+
+    if (todoButton && todoInput) {
+        todoButton.disabled = false;
+        todoInput.disabled = false;
+
+        todoButton.addEventListener("click", function () {
+            const text = todoInput.value.trim();
+            if (!text) return;
+            todos.push({ text: text, completed: false });
+            todoInput.value = "";
+            saveTodos();
+            renderTodos();
+        });
+    }
+
+    renderTodos();
+    updateTodoProgress();
 
     /* ===== NOTES ===== */
     const noteInput = document.getElementById("note-input");
@@ -23,71 +82,60 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function saveNotes() {
         localStorage.setItem("notes", JSON.stringify(notes));
-        updateProgress();
+        updateNotesProgress();
     }
 
     function renderNotes() {
         if (!notesList) return;
         notesList.innerHTML = "";
-
         notes.forEach((note, index) => {
             const li = document.createElement("li");
-            li.classList.add("note-item");
-
-            const text = document.createElement("span");
-            text.textContent = note;
+            const span = document.createElement("span");
+            span.textContent = note;
 
             const deleteBtn = document.createElement("button");
             deleteBtn.textContent = "✕";
             deleteBtn.className = "delete-note";
-
-            deleteBtn.addEventListener("click", function () {
+            deleteBtn.addEventListener("click", () => {
                 notes.splice(index, 1);
                 saveNotes();
                 renderNotes();
             });
 
-            li.appendChild(text);
+            li.appendChild(span);
             li.appendChild(deleteBtn);
             notesList.appendChild(li);
         });
     }
 
     if (addNoteBtn && noteInput) {
-        addNoteBtn.addEventListener("click", function () {
+        addNoteBtn.addEventListener("click", () => {
             const value = noteInput.value.trim();
             if (!value) return;
             notes.push(value);
             noteInput.value = "";
             saveNotes();
             renderNotes();
-            animateProgress();
         });
     }
 
-    function updateProgress() {
+    function updateNotesProgress() {
         if (!progressBar) return;
         const percent = Math.min(notes.length * 10, 100);
         progressBar.style.width = percent + "%";
     }
 
-    function animateProgress() {
-        if (!progressBar) return;
-        progressBar.classList.add("animate");
-        setTimeout(() => progressBar.classList.remove("animate"), 800);
-    }
-
     renderNotes();
-    updateProgress();
+    updateNotesProgress();
 
-    /* ===== STREAK SYSTEM ===== */
+    /* ===== STREAK ===== */
     const streakBtn = document.getElementById("streak-btn");
     const streakCount = document.getElementById("streak-count");
     const streakStatus = document.getElementById("streak-status");
 
     function loadStreak() {
-        const streak = parseInt(localStorage.getItem("streak")) || 0;
-        if (streakCount) streakCount.textContent = streak;
+        let streak = parseInt(localStorage.getItem("streak")) || 0;
+        streakCount.textContent = streak;
         updateStatus(streak);
     }
 
@@ -99,32 +147,31 @@ document.addEventListener("DOMContentLoaded", function () {
         else streakStatus.textContent = "Элитная дисциплина";
     }
 
-    function confirmStudyToday() {
-        const today = new Date().toDateString();
-        const lastVisit = localStorage.getItem("lastVisit");
-        let streak = parseInt(localStorage.getItem("streak")) || 0;
+    if (streakBtn) {
+        streakBtn.addEventListener("click", () => {
+            const today = new Date().toDateString();
+            const lastVisit = localStorage.getItem("lastVisit");
+            let streak = parseInt(localStorage.getItem("streak")) || 0;
 
-        if (lastVisit === today) return;
+            if (lastVisit === today) return;
 
-        const yesterday = new Date();
-        yesterday.setDate(yesterday.getDate() - 1);
+            const yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() - 1);
 
-        if (lastVisit === yesterday.toDateString()) streak += 1;
-        else streak = 1;
+            if (lastVisit === yesterday.toDateString()) streak += 1;
+            else streak = 1;
 
-        localStorage.setItem("lastVisit", today);
-        localStorage.setItem("streak", streak);
+            localStorage.setItem("lastVisit", today);
+            localStorage.setItem("streak", streak);
 
-        if (streakCount) {
             streakCount.textContent = streak;
             streakCount.classList.add("streak-glow");
             setTimeout(() => streakCount.classList.remove("streak-glow"), 800);
-        }
 
-        updateStatus(streak);
+            updateStatus(streak);
+        });
     }
 
-    if (streakBtn) streakBtn.addEventListener("click", confirmStudyToday);
     loadStreak();
 
     /* ===== CALENDAR ===== */
@@ -137,73 +184,5 @@ document.addEventListener("DOMContentLoaded", function () {
             localStorage.setItem("selectedDate", calendarInput.value);
         });
     }
-
-    /* ===== TO-DO LIST ===== */
-    const todoInput = document.getElementById("todo-input");
-    const addTodoBtn = document.getElementById("add-todo");
-    const todoList = document.getElementById("todo-list");
-    const todoProgressBar = document.getElementById("todo-progress-bar");
-    const todoProgressText = document.getElementById("todo-progress-text");
-    const todoCompleteMsg = document.getElementById("todo-complete-message");
-
-    let todos = JSON.parse(localStorage.getItem("todos")) || [];
-
-    function saveTodos() {
-        localStorage.setItem("todos", JSON.stringify(todos));
-        updateTodoProgress();
-    }
-
-    function renderTodos() {
-        if (!todoList) return;
-        todoList.innerHTML = "";
-
-        todos.forEach((task, index) => {
-            const li = document.createElement("li");
-            const label = document.createElement("label");
-
-            const checkbox = document.createElement("input");
-            checkbox.type = "checkbox";
-            checkbox.checked = task.completed;
-
-            checkbox.addEventListener("change", function () {
-                task.completed = checkbox.checked;
-                saveTodos();
-            });
-
-            const span = document.createElement("span");
-            span.textContent = task.text;
-
-            label.appendChild(checkbox);
-            label.appendChild(span);
-            li.appendChild(label);
-            todoList.appendChild(li);
-        });
-    }
-
-    function updateTodoProgress() {
-        if (!todoProgressBar || !todoProgressText) return;
-        const completed = todos.filter(t => t.completed).length;
-        const total = todos.length;
-        todoProgressText.textContent = Выполнено: ${completed} из ${total};
-        const percent = total ? (completed / total) * 100 : 0;
-        todoProgressBar.style.width = percent + "%";
-
-        if (completed === total && total > 0) todoCompleteMsg.classList.add("show");
-        else todoCompleteMsg.classList.remove("show");
-    }
-
-    if (addTodoBtn && todoInput) {
-        addTodoBtn.addEventListener("click", function () {
-            const text = todoInput.value.trim();
-            if (!text) return;
-            todos.push({ text, completed: false });
-            todoInput.value = "";
-            saveTodos();
-            renderTodos();
-        });
-    }
-
-    renderTodos();
-    updateTodoProgress();
 
 });
