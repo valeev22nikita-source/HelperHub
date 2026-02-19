@@ -36,9 +36,8 @@ font-weight:900;
 letter-spacing:.5px;
 animation:pulse 2.5s infinite;
 }
-.logo span{
-color:#ff8c00;
-}
+.logo span{color:#ff8c00;}
+
 .tagline{
 max-width:440px;
 text-align:center;
@@ -51,6 +50,36 @@ line-height:1.4;
 0%{text-shadow:0 0 6px #ff8c00;}
 50%{text-shadow:0 0 28px #ff8c00;}
 100%{text-shadow:0 0 6px #ff8c00;}
+}
+
+/* STREAK SQUARE */
+.streakCard{
+width:260px;
+height:260px;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+gap:12px;
+background:rgba(255,140,0,.08);
+border-radius:28px;
+box-shadow:
+0 0 40px rgba(255,140,0,.25),
+inset 0 0 30px rgba(255,140,0,.15);
+margin:30px 0;
+}
+
+.streakNumber{
+font-size:56px;
+font-weight:900;
+color:#ff8c00;
+text-shadow:0 0 20px rgba(255,140,0,.6);
+}
+
+.streakLabel{
+opacity:.7;
+font-size:14px;
+letter-spacing:.5px;
 }
 
 /* CARD */
@@ -87,9 +116,7 @@ cursor:pointer;
 box-shadow:0 0 15px rgba(255,140,0,.4);
 transition:.2s;
 }
-button:hover{
-transform:scale(1.05);
-}
+button:hover{transform:scale(1.05);}
 
 ul{padding-left:20px;}
 </style>
@@ -102,9 +129,10 @@ ul{padding-left:20px;}
 <div class="tagline">Удобная система управления учебой</div>
 </header>
 
-<div class="card">
-<h3>🔥 Учебный стрик</h3>
-<div id="streak">0</div>
+<!-- STREAK -->
+<div class="streakCard">
+<div class="streakNumber" id="streak">0</div>
+<div class="streakLabel">дней подряд</div>
 <button onclick="markToday()">Сегодня учился</button>
 </div>
 
