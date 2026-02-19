@@ -1,1 +1,234 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HelperHub</title>
 
+<style>
+body{
+margin:0;
+font-family:Arial;
+background:#0b0b0b;
+color:#fff;
+}
+
+.header{
+text-align:center;
+padding:60px 20px;
+}
+
+.helper{
+background:#ff9900;
+color:#000;
+padding:6px 14px;
+border-radius:10px;
+margin-right:6px;
+}
+
+.container{
+max-width:800px;
+margin:auto;
+padding:20px;
+display:flex;
+flex-direction:column;
+gap:24px;
+}
+
+.card{
+background:#151515;
+padding:20px;
+border-radius:14px;
+border:1px solid #222;
+}
+
+h2{color:#ff9900;margin-top:0;}
+
+.row{display:flex;gap:10px;margin-bottom:10px;}
+
+input{
+flex:1;
+padding:10px;
+border-radius:8px;
+border:1px solid #333;
+background:#111;
+color:#fff;
+}
+
+button{
+background:#ff9900;
+border:none;
+padding:10px 16px;
+border-radius:8px;
+font-weight:700;
+}
+
+ul{list-style:none;padding:0;margin:10px 0;}
+
+li{
+padding:8px;
+background:#1b1b1b;
+border-radius:8px;
+margin-bottom:6px;
+}
+
+.progress{
+height:10px;
+background:#222;
+border-radius:20px;
+overflow:hidden;
+}
+
+.progress div{
+height:100%;
+width:0;
+background:#ff9900;
+transition:.3s;
+}
+
+.streak{
+display:flex;
+justify-content:space-between;
+align-items:center;
+font-size:22px;
+font-weight:900;
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+<h1><span class="helper">Helper</span>Hub</h1>
+<p>Удобная система управления учебой</p>
+</header>
+
+<main class="container">
+
+<section class="card">
+<h2>🔥 Учебный стрик</h2>
+<div class="streak">
+<span id="streak-count">0</span>
+<button id="streak-btn">Сегодня учился</button>
+</div>
+</section>
+
+<section class="card">
+<h2>📋 Задачи</h2>
+<div class="row">
+<input id="todo-input" placeholder="Добавить задачу">
+<button id="todo-add-btn">Добавить</button>
+</div>
+<ul id="todo-list"></ul>
+<p id="todo-progress-text"></p>
+<div class="progress"><div id="todo-progress-bar"></div></div>
+</section>
+
+<section class="card">
+<h2>📝 Заметки</h2>
+<div class="row">
+<input id="note-input" placeholder="Напишите заметку">
+<button id="add-note">Добавить</button>
+</div>
+<ul id="notes-list"></ul>
+<div class="progress"><div id="progress-bar"></div></div>
+</section>
+
+</main>
+
+<script>
+document.addEventListener("DOMContentLoaded",()=>{
+
+/* TODOS */
+const input=document.getElementById("todo-input");
+const addBtn=document.getElementById("todo-add-btn");
+const list=document.getElementById("todo-list");
+const progressText=document.getElementById("todo-progress-text");
+const progressBar=document.getElementById("todo-progress-bar");
+
+let todos=JSON.parse(localStorage.getItem("todos"))||[];
+
+function save(){
+localStorage.setItem("todos",JSON.stringify(todos));
+render();
+}
+
+function render(){
+list.innerHTML="";
+todos.forEach((t,i)=>{
+const li=document.createElement("li");
+const cb=document.createElement("input");
+cb.type="checkbox";
+cb.checked=t.done;
+cb.onchange=()=>{todos[i].done=cb.checked;save();};
+li.append(cb,document.createTextNode(" "+t.text));
+list.append(li);
+});
+
+const done=todos.filter(t=>t.done).length;
+progressText.textContent=`Выполнено: ${done} из ${todos.length}`;
+progressBar.style.width=(todos.length?done/todos.length*100:0)+"%";
+}
+
+addBtn.onclick=()=>{
+const v=input.value.trim();
+if(!v)return;
+todos.push({text:v,done:false});
+input.value="";
+save();
+};
+
+render();
+
+/* NOTES */
+const nInput=document.getElementById("note-input");
+const nBtn=document.getElementById("add-note");
+const nList=document.getElementById("notes-list");
+const nBar=document.getElementById("progress-bar");
+
+let notes=JSON.parse(localStorage.getItem("notes"))||[];
+
+function saveNotes(){
+localStorage.setItem("notes",JSON.stringify(notes));
+drawNotes();
+}
+
+function drawNotes(){
+nList.innerHTML="";
+notes.forEach((n,i)=>{
+const li=document.createElement("li");
+li.textContent=n;
+li.onclick=()=>{notes.splice(i,1);saveNotes();};
+nList.append(li);
+});
+nBar.style.width=Math.min(notes.length*10,100)+"%";
+}
+
+nBtn.onclick=()=>{
+const v=nInput.value.trim();
+if(!v)return;
+notes.push(v);
+nInput.value="";
+saveNotes();
+};
+
+drawNotes();
+
+/* STREAK */
+const streakBtn=document.getElementById("streak-btn");
+const streakCount=document.getElementById("streak-count");
+
+let streak=parseInt(localStorage.getItem("streak"))||0;
+streakCount.textContent=streak;
+
+streakBtn.onclick=()=>{
+streak++;
+localStorage.setItem("streak",streak);
+streakCount.textContent=streak;
+};
+
+});
+</script>
+
+</body>
+</html>  
