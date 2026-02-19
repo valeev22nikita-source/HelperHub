@@ -1,161 +1,141 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>HelperHub</title>
 
 <style>
 body{
 margin:0;
-font-family:Arial, sans-serif;
-background:linear-gradient(180deg,#0f0f0f,#1c1c1c);
+font-family:Arial,Helvetica,sans-serif;
+background:radial-gradient(circle at top,#111,#000);
 color:white;
-}
-
-/* ШАПКА */
-header{
-display:flex;
-align-items:center;
-justify-content:space-between;
-padding:20px 30px;
-background:rgba(0,0,0,.6);
-backdrop-filter:blur(8px);
-border-bottom:1px solid rgba(255,255,255,.08);
-}
-
-.logo{
-font-size:22px;
-font-weight:700;
-letter-spacing:.5px;
-}
-
-/* КОНТЕНТ */
-.container{
-max-width:900px;
-margin:40px auto;
-padding:0 20px;
 display:flex;
 flex-direction:column;
-gap:20px;
+align-items:center;
 }
 
-/* КАРТОЧКИ */
-.card{
-background:#1e1e1e;
-border-radius:18px;
+/* HEADER */
+header{
+position:sticky;
+top:0;
+width:100%;
+backdrop-filter:blur(10px);
+background:rgba(0,0,0,.6);
 padding:20px;
-box-shadow:0 10px 25px rgba(0,0,0,.35);
-transition:.25s;
+text-align:center;
 }
 
-.card:hover{
-transform:translateY(-3px);
-box-shadow:0 14px 30px rgba(0,0,0,.45);
+/* LOGO */
+.logo{
+font-size:34px;
+font-weight:800;
+animation:pulse 2.5s infinite;
+}
+.logo span{
+color:#ff8c00;
+}
+@keyframes pulse{
+0%{text-shadow:0 0 5px #ff8c00;}
+50%{text-shadow:0 0 25px #ff8c00;}
+100%{text-shadow:0 0 5px #ff8c00;}
 }
 
-h2{
-margin-top:0;
-font-size:18px;
-opacity:.9;
+/* CARD */
+.card{
+width:90%;
+max-width:700px;
+background:rgba(255,255,255,.05);
+border-radius:20px;
+padding:20px;
+margin:20px;
+box-shadow:0 0 20px rgba(255,140,0,.15);
 }
 
 /* INPUT */
 input{
-width:100%;
+width:80%;
 padding:12px;
-border-radius:12px;
+border-radius:10px;
 border:none;
-background:#2a2a2a;
-color:white;
 outline:none;
-margin-bottom:10px;
-}
-
-button{
-padding:10px 16px;
-border:none;
-border-radius:12px;
-background:#4f7cff;
+background:#111;
 color:white;
+}
+
+/* BUTTON */
+button{
+padding:12px 18px;
+border:none;
+border-radius:10px;
+background:#ff8c00;
+color:black;
+font-weight:700;
 cursor:pointer;
-font-weight:600;
-transition:.2s;
+box-shadow:0 0 15px rgba(255,140,0,.4);
 }
-
 button:hover{
-opacity:.85;
+transform:scale(1.05);
 }
-
-.task{
-padding:8px 0;
-border-bottom:1px solid rgba(255,255,255,.05);
-}
+ul{padding-left:20px;}
 </style>
 </head>
 
 <body>
 
 <header>
-<div class="logo">HelperHub</div>
+<div class="logo"><span>Helper</span>Hub</div>
+<div style="opacity:.7">Удобная система управления учебой</div>
 </header>
 
-<div class="container">
-
 <div class="card">
-<h2>Стрик</h2>
-<div id="streak">0 дней</div>
+<h3>🔥 Учебный стрик</h3>
+<div id="streak">0</div>
+<button onclick="markToday()">Сегодня учился</button>
 </div>
 
 <div class="card">
-<h2>Задачи</h2>
-<input id="taskInput" placeholder="Добавить задачу">
+<h3>📋 Задачи</h3>
+<input id="taskInput" placeholder="Добавить задачу"/>
 <button onclick="addTask()">Добавить</button>
-<div id="tasks"></div>
+<ul id="taskList"></ul>
 </div>
 
 <div class="card">
-<h2>Заметки</h2>
-<input id="noteInput" placeholder="Новая заметка">
-<button onclick="addNote()">Сохранить</button>
-<div id="notes"></div>
-</div>
-
+<h3>📝 Заметки</h3>
+<input id="noteInput" placeholder="Написать заметку"/>
+<button onclick="addNote()">Добавить</button>
+<ul id="noteList"></ul>
 </div>
 
 <script>
-let tasks=[]
-let notes=[]
-let streak=0
+let streak=localStorage.getItem("streak")||0;
+document.getElementById("streak").innerText=streak;
 
-function render(){
-document.getElementById("tasks").innerHTML=
-tasks.map(t=>`<div class="task">${t}</div>`).join("")
-
-document.getElementById("notes").innerHTML=
-notes.map(n=>`<div class="task">${n}</div>`).join("")
-
-document.getElementById("streak").innerText=streak+" дней"
+function markToday(){
+streak++;
+localStorage.setItem("streak",streak);
+document.getElementById("streak").innerText=streak;
 }
 
 function addTask(){
-const input=document.getElementById("taskInput")
-if(!input.value) return
-tasks.push(input.value)
-input.value=""
-streak++
-render()
+const v=document.getElementById("taskInput").value;
+if(!v)return;
+const li=document.createElement("li");
+li.textContent=v;
+document.getElementById("taskList").appendChild(li);
+document.getElementById("taskInput").value="";
 }
 
 function addNote(){
-const input=document.getElementById("noteInput")
-if(!input.value) return
-notes.push(input.value)
-input.value=""
-render()
+const v=document.getElementById("noteInput").value;
+if(!v)return;
+const li=document.createElement("li");
+li.textContent=v;
+document.getElementById("noteList").appendChild(li);
+document.getElementById("noteInput").value="";
 }
-
-render()
 </script>
 
 </body>
