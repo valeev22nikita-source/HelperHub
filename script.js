@@ -1,155 +1,104 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
 
-    /* ===== TO-DO ===== */
-    const todoInput = document.getElementById("todo-input");
-    const todoAddBtn = document.getElementById("todo-add-btn");
-    const todoList = document.querySelector("#todo-section .todo-list");
-    const todoProgressText = document.getElementById("todo-progress-text");
-    const todoProgressBar = document.getElementById("todo-progress-bar");
-    const todoCompleteMessage = document.getElementById("todo-complete-message");
+/* ===== TODOS ===== */
+const input = document.getElementById("todo-input");
+const addBtn = document.getElementById("todo-add-btn");
+const list = document.getElementById("todo-list");
+const progressText = document.getElementById("todo-progress-text");
+const progressBar = document.getElementById("todo-progress-bar");
 
-    let todos = JSON.parse(localStorage.getItem("todos")) || [];
+let todos = JSON.parse(localStorage.getItem("todos")) || [];
 
-    function saveTodos() {
-        localStorage.setItem("todos", JSON.stringify(todos));
-        updateTodoProgress();
-    }
+function save(){
+localStorage.setItem("todos", JSON.stringify(todos));
+render();
+}
 
-    function renderTodos() {
-        todoList.innerHTML = "";
-        todos.forEach((todo, index) => {
-            const li = document.createElement("li");
-            li.classList.toggle("completed", todo.completed);
+function render(){
+list.innerHTML="";
 
-            const label = document.createElement("label");
-            const checkbox = document.createElement("input");
-            checkbox.type = "checkbox";
-            checkbox.checked = todo.completed;
+todos.forEach((t,i)=>{
+const li=document.createElement("li");
 
-            checkbox.addEventListener("change", () => {
-                todos[index].completed = checkbox.checked;
-                li.classList.toggle("completed", checkbox.checked);
-                saveTodos();
-            });
+const cb=document.createElement("input");
+cb.type="checkbox";
+cb.checked=t.done;
 
-            label.appendChild(checkbox);
-            label.appendChild(document.createTextNode(todo.text));
-            li.appendChild(label);
-            todoList.appendChild(li);
-        });
-    }
+cb.onchange=()=>{
+todos[i].done=cb.checked;
+save();
+};
 
-    function updateTodoProgress() {
-        const completed = todos.filter(t => t.completed).length;
-        const total = todos.length || 1;
-        todoProgressText.textContent = Выполнено: ${completed} из ${todos.length};
-        const percent = (completed / total) * 100;
-        todoProgressBar.style.width = percent + "%";
+li.append(cb, document.createTextNode(t.text));
+list.append(li);
+});
 
-        if (completed === todos.length && todos.length > 0) {
-            todoCompleteMessage.classList.add("show");
-            setTimeout(() => todoCompleteMessage.classList.remove("show"), 1500);
-        }
-    }
+const done=todos.filter(t=>t.done).length;
+progressText.textContent=`Выполнено: ${done} из ${todos.length}`;
+progressBar.style.width=(todos.length?done/todos.length*100:0)+"%";
+}
 
-    todoAddBtn.addEventListener("click", () => {
-        const text = todoInput.value.trim();
-        if (!text) return;
-        todos.push({ text, completed: false });
-        todoInput.value = "";
-        saveTodos();
-        renderTodos();
-    });
+addBtn.onclick=()=>{
+const v=input.value.trim();
+if(!v) return;
+todos.push({text:v,done:false});
+input.value="";
+save();
+};
 
-    renderTodos();
-    updateTodoProgress();
+render();
 
-    /* ===== NOTES ===== */
-    const noteInput = document.getElementById("note-input");
-    const addNoteBtn = document.getElementById("add-note");
-    const notesList = document.getElementById("notes-list");
-    const progressBar = document.getElementById("progress-bar");
+/* ===== NOTES ===== */
+const nInput=document.getElementById("note-input");
+const nBtn=document.getElementById("add-note");
+const nList=document.getElementById("notes-list");
+const nBar=document.getElementById("progress-bar");
 
-    let notes = JSON.parse(localStorage.getItem("notes")) || [];
+let notes=JSON.parse(localStorage.getItem("notes"))||[];
 
-    function saveNotes() {
-        localStorage.setItem("notes", JSON.stringify(notes));
-        updateNotesProgress();
-    }
+function saveNotes(){
+localStorage.setItem("notes",JSON.stringify(notes));
+drawNotes();
+}
 
-    function renderNotes() {
-        notesList.innerHTML = "";
-        notes.forEach((note, index) => {
-            const li = document.createElement("li");
-            const span = document.createElement("span");
-            span.textContent = note;
+function drawNotes(){
+nList.innerHTML="";
+notes.forEach((n,i)=>{
+const li=document.createElement("li");
+li.textContent=n;
 
-            const deleteBtn = document.createElement("button");
-            deleteBtn.textContent = "✕";
-            deleteBtn.className = "delete-note";
-            deleteBtn.addEventListener("click", () => {
-                notes.splice(index, 1);
-                saveNotes();
-                renderNotes();
-            });
+li.onclick=()=>{
+notes.splice(i,1);
+saveNotes();
+};
 
-            li.appendChild(span);
-            li.appendChild(deleteBtn);
-            notesList.appendChild(li);
-        });
-    }
+nList.append(li);
+});
 
-    addNoteBtn.addEventListener("click", () => {
-        const value = noteInput.value.trim();
-        if (!value) return;
-        notes.push(value);
-        noteInput.value = "";
-        saveNotes();
-        renderNotes();
-    });
+nBar.style.width=Math.min(notes.length*10,100)+"%";
+}
 
-    function updateNotesProgress() {
-        const percent = Math.min(notes.length * 10, 100);
-        progressBar.style.width = percent + "%";
-    }
+nBtn.onclick=()=>{
+const v=nInput.value.trim();
+if(!v) return;
+notes.push(v);
+nInput.value="";
+saveNotes();
+};
 
-    renderNotes();
-    updateNotesProgress();
+drawNotes();
 
-    /* ===== STREAK ===== */
-    const streakBtn = document.getElementById("streak-btn");
-    const streakCount = document.getElementById("streak-count");
-    const streakStatus = document.getElementById("streak-status");
+/* ===== STREAK ===== */
+const streakBtn=document.getElementById("streak-btn");
+const streakCount=document.getElementById("streak-count");
 
-    function loadStreak() {
-        let streak = parseInt(localStorage.getItem("streak")) || 0;
-        streakCount.textContent = streak;
-        updateStatus(streak);
-    }
+let streak=parseInt(localStorage.getItem("streak"))||0;
+streakCount.textContent=streak;
 
-    function updateStatus(streak) {
-        if (streak < 3) streakStatus.textContent = "Начало пути";
-        else if (streak < 7) streakStatus.textContent = "На огне 🔥";
-        else if (streak < 14) streakStatus.textContent = "Непобедим";
-        else streakStatus.textContent = "Элитная дисциплина";
-    }
+streakBtn.onclick=()=>{
+streak++;
+localStorage.setItem("streak",streak);
+streakCount.textContent=streak;
+};
 
-    streakBtn.addEventListener("click", () => {
-        const today = new Date().toDateString();
-        const lastVisit = localStorage.getItem("lastVisit");
-        let streak = parseInt(localStorage.getItem("streak")) || 0;
-
-        if (lastVisit === today) return;
-
-        const yesterday = new Date();
-        yesterday.setDate(yesterday.getDate() - 1);
-
-        if (lastVisit === yesterday.toDateString()) streak += 1;
-        else streak = 1;
-
-        localStorage.setItem("lastVisit", today);
-        localStorage.setItem("streak", streak);
-
-        streakCount.textContent = streak;
-        streakCount.classList.add("streak-glow");
-        setTimeout(() => streakCount.classList.remove("st
+});
