@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+alert("JS загрузился");document.addEventListener("DOMContentLoaded", () => {
 
 /* ===== TODOS ===== */
 const input = document.getElementById("todo-input");
