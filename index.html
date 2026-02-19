@@ -1,97 +1,56 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <title>HelperHub</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>HelperHub</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<header>
-    <div class="logo-wrapper">
-        <h1><span class="helper">Helper</span> <span class="hub">Hub</span></h1>
-        <div class="tagline">Удобная система управления учебой</div>
-    </div>
+<header class="header">
+    <h1><span class="helper">Helper</span>Hub</h1>
+    <p class="tagline">Удобная система управления учебой</p>
 </header>
 
-<main>
+<main class="container">
 
-    <section id="streak-section" class="streak-card">
-        <h2>🔥 Учебный стрик</h2>
-        <div class="streak-content">
-            <div class="streak-number">
-                <span id="streak-count">0</span>
-                <p id="streak-status">Начало пути</p>
-            </div>
-            <button id="streak-btn">Сегодня учился</button>
-        </div>
-    </section>
+<section class="card">
+<h2>🔥 Учебный стрик</h2>
+<div class="streak">
+<span id="streak-count">0</span>
+<button id="streak-btn">Сегодня учился</button>
+</div>
+</section>
 
-    <section id="level-section" class="level-card">
-        <h2>🏆 Уровень дисциплины</h2>
-        <div class="level-content">
-            <p class="level-title">Воин дисциплины</p>
-            <div class="level-progress-container">
-                <div class="level-progress-bar"></div>
-            </div>
-            <p class="level-next">До следующего уровня: 4 дня</p>
-        </div>
-    </section>
+<section class="card">
+<h2>📋 Задачи</h2>
+<div class="row">
+<input id="todo-input" placeholder="Добавить задачу">
+<button id="todo-add-btn">Добавить</button>
+</div>
+<ul id="todo-list"></ul>
+<p id="todo-progress-text"></p>
+<div class="progress"><div id="todo-progress-bar"></div></div>
+</section>
 
-    <section id="todo-section">
-        <h2>📋 Задачи на сегодня</h2>
-        <div class="todo-input-wrapper">
-            <input type="text" placeholder="Добавить задачу..." id="todo-input">
-            <button id="todo-add-btn">Добавить</button>
-        </div>
-        <ul class="todo-list"></ul>
-        <div class="todo-progress-wrapper">
-            <div class="todo-progress-info">
-                <span id="todo-progress-text">Выполнено: 0 из 0</span>
-            </div>
-            <div class="todo-progress-bar-container">
-                <div id="todo-progress-bar"></div>
-            </div>
-            <div id="todo-complete-message" class="todo-complete-message">🎉 Сегодня выполнено!</div>
-        </div>
-    </section>
+<section class="card">
+<h2>📝 Заметки</h2>
+<div class="row">
+<input id="note-input" placeholder="Напишите заметку">
+<button id="add-note">Добавить</button>
+</div>
+<ul id="notes-list"></ul>
+<div class="progress"><div id="progress-bar"></div></div>
+</section>
 
-    <section id="notes-section">
-        <h2>Заметки</h2>
-        <div class="note-input-wrapper">
-            <input type="text" id="note-input" placeholder="Напишите заметку...">
-            <button id="add-note">Добавить</button>
-        </div>
-        <ul id="notes-list"></ul>
-    </section>
-
-    <section id="progress-section">
-        <h2>Прогресс заметок</h2>
-        <div id="progress-bar-container">
-            <div id="progress-bar"></div>
-        </div>
-    </section>
-
-    <div class="lower-section-container">
-        <section id="resources-section">
-            <h2>Полезные ресурсы</h2>
-            <ul>
-                <li><a href="#" target="_blank">Сайт университета</a></li>
-                <li><a href="#" target="_blank">Образовательная платформа</a></li>
-                <li><a href="#" target="_blank">Библиотека материалов</a></li>
-            </ul>
-        </section>
-
-        <div class="middle-icon">🔥</div>
-
-        <section id="calendar-section">
-            <h2>Календарь</h2>
-            <input type="date" id="calendar-input">
-        </section>
-    </div>
+<section class="card">
+<h2>📅 Календарь</h2>
+<input type="date" id="calendar-input">
+</section>
 
 </main>
 
