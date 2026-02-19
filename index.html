@@ -16,30 +16,41 @@ flex-direction:column;
 align-items:center;
 }
 
-/* HEADER */
+/* HERO HEADER */
 header{
-position:sticky;
-top:0;
 width:100%;
-backdrop-filter:blur(10px);
-background:rgba(0,0,0,.6);
-padding:20px;
-text-align:center;
+padding:70px 20px 50px;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+backdrop-filter:blur(12px);
+background:linear-gradient(to bottom,rgba(0,0,0,.8),rgba(0,0,0,.2));
+border-bottom:1px solid rgba(255,140,0,.15);
 }
 
 /* LOGO */
 .logo{
-font-size:34px;
-font-weight:800;
+font-size:44px;
+font-weight:900;
+letter-spacing:.5px;
 animation:pulse 2.5s infinite;
 }
 .logo span{
 color:#ff8c00;
 }
+.tagline{
+max-width:440px;
+text-align:center;
+margin-top:10px;
+opacity:.75;
+line-height:1.4;
+}
+
 @keyframes pulse{
-0%{text-shadow:0 0 5px #ff8c00;}
-50%{text-shadow:0 0 25px #ff8c00;}
-100%{text-shadow:0 0 5px #ff8c00;}
+0%{text-shadow:0 0 6px #ff8c00;}
+50%{text-shadow:0 0 28px #ff8c00;}
+100%{text-shadow:0 0 6px #ff8c00;}
 }
 
 /* CARD */
@@ -48,9 +59,9 @@ width:90%;
 max-width:700px;
 background:rgba(255,255,255,.05);
 border-radius:20px;
-padding:20px;
+padding:22px;
 margin:20px;
-box-shadow:0 0 20px rgba(255,140,0,.15);
+box-shadow:0 0 25px rgba(255,140,0,.15);
 }
 
 /* INPUT */
@@ -74,10 +85,12 @@ color:black;
 font-weight:700;
 cursor:pointer;
 box-shadow:0 0 15px rgba(255,140,0,.4);
+transition:.2s;
 }
 button:hover{
 transform:scale(1.05);
 }
+
 ul{padding-left:20px;}
 </style>
 </head>
@@ -86,7 +99,7 @@ ul{padding-left:20px;}
 
 <header>
 <div class="logo"><span>Helper</span>Hub</div>
-<div style="opacity:.7">Удобная система управления учебой</div>
+<div class="tagline">Удобная система управления учебой</div>
 </header>
 
 <div class="card">
